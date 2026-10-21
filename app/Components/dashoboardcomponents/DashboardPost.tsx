@@ -63,7 +63,7 @@ export default function DashboardPost({ post }: { post: postType }) {
                 }
                 window.location.reload()
             }} className='text-3xl hover:text-red-500' />
-            <article className={`fixed ${activeDelAlert ? "top-0" : "-top-full"} left-1/2  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} `}> {t("dashboard.delAlert")} </article>
+            <article className={`fixed ${activeDelAlert ? "top-0" : "-top-full"} left-1/2   w-75  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} `}> {t("dashboard.delAlert")} </article>
         </article>
         
     )

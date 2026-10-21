@@ -144,7 +144,7 @@ export default function CommentForm({ post }: { post: postType }) {
                     />
                 )}
             </div>
-                <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } w-50 left-1/2  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("community.alert")} </article>
+                <article className={`fixed ${ activeAlert?"top-0" :"-top-full" }  w-75  left-1/2  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("community.alert")} </article>
         </div>
     )
 }

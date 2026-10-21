@@ -50,17 +50,24 @@ export default function LoginForm() {
     }
 
 const handleGoogle = async () => {
-    const { error: authError } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: `${window.location.origin}/`, 
-        }
-    })
-
-    if (authError) {
-        console.log("login error", authError.message)
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                // This route must process the temporary code 
+                redirectTo: 'https://venera-kerollos-melads-projects.vercel.app',
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                },
+            },
+        })
+    if (error || !data) {
+        console.log("login error", error?.message)
+        return
     }
-}
+    }
+    
+
     return (
         <article className={`p-6 rounded-2xl shadow-xl transition-all ${
             mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"
@@ -141,7 +148,7 @@ const handleGoogle = async () => {
                     {t("register.login.create")}
                 </button>
             </div>
-            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2   w-50 rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
+            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2    w-75  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
         </article>
     )
 }

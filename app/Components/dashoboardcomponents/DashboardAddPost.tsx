@@ -135,8 +135,8 @@ const handleAddPost = async (e: React.MouseEvent) => {
                 </div>
                 <button type='button' onClick={handleAddPost} className='flex items-center gap-1 col-span-1 md:col-span-2 p-3 bg-blue-600 hover:bg-blue-800 justify-center text-2xl rounded-2xl' >{t("dashboard.add.add")} <Plus/> </button>
             </form>
-            <article className={`fixed ${activeAlert ? "top-0" : "-top-full"} left-1/2  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} `}> {t("dashboard.alert")} </article>
-            <article className={`fixed ${ activeAddAlert?"top-0" :"-top-full" } left-1/2  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-blue-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("dashboard.addAlert")} </article>
+            <article className={`fixed ${activeAlert ? "top-0" : "-top-full"} left-1/2    w-75  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} `}> {t("dashboard.alert")} </article>
+            <article className={`fixed ${ activeAddAlert?"top-0" :"-top-full" } left-1/2    w-75  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-blue-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("dashboard.addAlert")} </article>
         </article>
     )
 }
