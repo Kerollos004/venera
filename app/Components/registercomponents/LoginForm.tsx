@@ -49,16 +49,18 @@ export default function LoginForm() {
         }
     }
 
-    const handleGoogle = async () => {
-        
-        const { error: authErorr } = await supabase.auth.signInWithOAuth({
-            provider:'google',
-        })
-        if (authErorr) {
-            console.log("login error" , authErorr.message)
+const handleGoogle = async () => {
+    const { error: authError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: `${window.location.origin}/`, 
         }
-        router.push("/")
+    })
+
+    if (authError) {
+        console.log("login error", authError.message)
     }
+}
     return (
         <article className={`p-6 rounded-2xl shadow-xl transition-all ${
             mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"

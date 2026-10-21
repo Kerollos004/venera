@@ -25,7 +25,7 @@ export default function About() {
 
     } 
 
-    const aboutTextVariants:Variants = {
+    const aboutTextVariants:Variants   = {
         hidden: {
             opacity:0.05
         }, 
