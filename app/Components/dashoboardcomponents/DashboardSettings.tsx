@@ -55,7 +55,7 @@ return (
                 e.preventDefault()
                 handleChangeLanguage()
             }}
-            className='p-3 flex md: w-full mb-3 justify-center items-center  gap-1 hover:bg-blue-800 bg-blue-600 rounded-3xl'
+            className='p-3 flex md:hidden w-full mb-3 justify-center items-center  gap-1 hover:bg-blue-800 bg-blue-600 rounded-3xl'
         >
             <ArrowRepeat/>
             {t("dashboard.settings.change")}
