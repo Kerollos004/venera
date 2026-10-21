@@ -37,7 +37,8 @@ export interface ProfileType {
     doctorType: string
     doctorPhoneNumber: string,
     doctorEmail: string,
-    is_admin?:boolean
+    is_admin?:boolean , 
+    created_at : string  
 }
 
 
