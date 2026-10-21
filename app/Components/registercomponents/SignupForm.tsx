@@ -246,7 +246,7 @@ export default function SignUpForm() {
                     {t("register.signUp.login")} 
                 </button>
             </div>
-            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2   w-75  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
+            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2   w-11/12 md:w-150 text-center  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
         </article>
     )
 }
