@@ -3,13 +3,13 @@ import React from 'react'
 import { useThemeContext } from '../assets/contexts'
 import { motion } from 'motion/react'
 import {  useTranslation } from 'react-i18next'
+import { Variants } from 'motion/react'
 export default function About() {
     const { t } = useTranslation()
     const aboutText = t("about.aboutText")
     const words = aboutText.split(" ")
     const { mode } = useThemeContext()
-
-    const aboutDivVariants = {
+    const aboutDivVariants:Variants = {
         hidden: {
             opacity:0.05
         }, 
@@ -19,14 +19,13 @@ export default function About() {
                 staggerChildren: .1,
                 duration: .1,
                 delayChildren: .1,
-                type: "spring",     
                 stiffness: 100 
             }
         }
 
     } 
 
-    const aboutTextVariants = {
+    const aboutTextVariants:Variants = {
         hidden: {
             opacity:0.05
         }, 

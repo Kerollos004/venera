@@ -8,10 +8,11 @@ import { useThemeContext } from '../assets/contexts'
 import "../../reacti18"
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
+import { Variants } from 'motion/react'
 export default function Hero() {
     const { mode } = useThemeContext()
     const {t} = useTranslation()
-const textsVariants = {
+const textsVariants:Variants = {
     hidden: { opacity: 0, y: "50px" },
     visible: { 
         opacity: 1, 
@@ -25,7 +26,7 @@ const textsVariants = {
     }
 }
 
-const textVariants = {
+const textVariants:Variants = {
     hidden: { opacity: 0, y: "20px" },
     visible: { 
         opacity: 1, 
@@ -33,7 +34,7 @@ const textVariants = {
         transition: { duration: 0.5 } 
     }
 }
-const toothVariants = {
+const toothVariants:Variants = {
         hidden: { 
             x: "100px", 
             rotate: 360, 
@@ -52,7 +53,7 @@ const toothVariants = {
         }
     }
 
-    const docVariants = {
+    const docVariants:Variants = {
         hidden: { 
             x: "-100px", 
             opacity: 0 

@@ -2,11 +2,11 @@
 import { useTranslation } from "react-i18next"
 import { useThemeContext } from "../assets/contexts"
 import { motion } from "motion/react"
-
+import { Variants } from "motion/react"
 export default function Services() {
     const { mode } = useThemeContext()
     const {t} = useTranslation()
-    const boxsVariatns = {
+    const boxsVariatns:Variants = {
         hidden: {
             y:"20px"
         },
@@ -19,7 +19,7 @@ export default function Services() {
             }
         }
     }
-    const boxVariants={
+    const boxVariants:Variants={
         hidden: {
             y:"20px"
         },
