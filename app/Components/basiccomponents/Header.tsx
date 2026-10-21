@@ -151,7 +151,7 @@ export default function Header() {
             : "bg-[rgba(29,35,52,0.7)]  backdrop-blur-md ") 
         : "bg-transparent"
                 }`}
-            initial={{ y: -200, opactiy: 0 }}
+            initial={{ y: -200, opacity: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{duration:1}}
         >
