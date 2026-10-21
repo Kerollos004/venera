@@ -54,7 +54,7 @@ const handleGoogle = async () => {
             provider: 'google',
             options: {
                 // This route must process the temporary code 
-                redirectTo: 'https://venera-kerollos-melads-projects.vercel.app',
+                redirectTo: 'https://venera-kerollos-melads-projects.vercel.app/',
                 queryParams: {
                     access_type: 'offline',
                     prompt: 'consent',

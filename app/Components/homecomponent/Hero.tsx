@@ -6,12 +6,10 @@ import doc from "../../../public/images/doc-removebg-preview.png"
 import Image from "next/image"
 import { useThemeContext } from '../assets/contexts'
 import "../../reacti18"
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import { Variants } from 'motion/react'
-import { useRouter } from 'next/navigation'
-import { supabase } from '../assets/supabase-client'
+
 export default function Hero() {
     const { mode } = useThemeContext()
     const {t} = useTranslation()
@@ -74,21 +72,7 @@ const toothVariants:Variants = {
     }
 
 
-const router = useRouter()
 
-useEffect(() => {
-    // السطر ده مهم جداً: بيسمح لـ Supabase إنه يلقط الـ Hash tokens من الـ URL ويخزن الـ Session
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-    if (session) {
-        // لو التسجيل تم بنجاح، ممكن تعمل شيل للـ tokens من الـ URL عشان يبמו نظيف
-        window.history.replaceState({}, document.title, window.location.pathname)
-    }
-    })
-
-    return () => {
-        authListener.subscription.unsubscribe()
-    }
-}, [router])
 
     return (
         <section className='flex justify-center items-center w-full h-screen relative overflow-hidden'>
