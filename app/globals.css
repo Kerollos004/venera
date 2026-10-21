@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+
+
+
+*{
+    box-sizing: border-box;
+    transition: all .4s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+
+    font-family: "Manrope", sans-serif;
+}
+a{
+    display: inline-block;
+}
+p{
+    line-height: 1.4;
+}
+
+.menu-btn:hover div{
+    width: 100%;
+}
+
+body.light-mode main {
+    background-color: #fff;
+    background-image: 
+        linear-gradient(to right, rgb(240, 240, 240) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(240, 240, 240) 1px, transparent 1px),
+        radial-gradient(circle 600px at 0% 200px, rgb(213, 205, 233 , .7), transparent),
+        radial-gradient(circle 600px at 100% 200px, rgb(213, 205, 233 , .7), transparent);
+
+    background-size: 
+        96px 64px, 
+        96px 64px, 
+        100% 100%, 
+        100% 100%;
+
+        color: black;
+        background-attachment: fixed;
+
+}
+body.dark-mode main {
+    background-color: #0f131d; 
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle 600px at 0% 200px, rgba(79, 70, 229, 0.15), transparent),
+        radial-gradient(circle 600px at 100% 200px, rgba(79, 70, 229, 0.15), transparent);
+
+    background-size: 
+        96px 64px, 
+        96px 64px, 
+        100% 100%, 
+        100% 100%;
+
+    color: white;
+    background-attachment: fixed;
+}
+
+.banner{
+    background-image: url(../public/images/DENTISTRY-2-.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.swiper-pagination{
+    width:100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-pagination-bullet{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(43, 127, 255);
+    opacity: .6;
+}
+.swiper-pagination-bullet-active{
+    background-color: #193cb8;
+    opacity: 1;
+}
+
+@media screen and (max-width:768px) {
+    header nav ul{
+        position: absolute;
+        top: 100%;
+        right: 0;
+        flex-direction: column; 
+        padding: 0 15px;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        height: 0px;
+        overflow: hidden;
+    }
+    header nav ul.active{
+        height: 230px;
+        background-color: #e5e7eb;
+        color: black;
+    }
+    header nav ul.active.dark-mode{
+        height: 230px;
+        background-color: rgba(29,35,52);
+        color: white;
+    }
+
+}
+

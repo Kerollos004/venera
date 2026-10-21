@@ -1,0 +1,215 @@
+{
+"navbar": {
+    "home": "home",
+    "community": "community",
+    "pricing": "plans",
+    "login":"login"
+},
+"hero": {
+    "welcome": "welcome to venera",
+    "description": "the best platform for dentists",
+    "btn1":"check the community",
+    "btn2":"choose plan"
+},
+"about":{
+    "aboutTitle":"what is venera",
+    "aboutText": "Venera is the premier specialized platform empowering dentists to build a distinguished digital footprint. We provide the essential tools to transform your professional journey into an interactive portfolio that showcases your clinical precision, certified credentials, and scientific achievements. Our mission is to connect dental visionaries within a sophisticated professional community, while bolstering patient trust through high-end visual storytelling that reflects luxury and uncompromising professionalism."
+},
+
+"services": {
+    "serviceTitle":"what venera offers",
+    "firstService": {
+        "title": "Digital Portfolio",
+        "desc": "Showcase your clinical cases and achievements with a modern, professional design that captivates your visitors."
+    },
+    "secondService": {
+        "title": "Digital Presence",
+        "desc": "Enhance your online visibility, making it easier for both patients and colleagues to discover your expertise."
+    },
+    "thirdService": {
+        "title": "Interactive Community",
+        "desc": "Connect with elite dental professionals, exchange expertise, and engage in meaningful medical discussions."
+    }
+},
+
+"footer": {
+    "description": "The Future of Digital Dentistry. Built for professionals, by professionals.",
+    "linksTitle": "Main Links",
+    "links": {
+        "home": "Home",
+        "community": "Community",
+        "pricing": "Plans"
+    },
+    "support": {
+        "title": "Tell us any problem",
+        "placeholder": "Your message...",
+        "responseNote": "We usually respond within 24 hours."
+    },
+    "copyRight": "© 2026 Venera. Developed with passion by Kerollos Melad"
+}
+,
+
+"community":{
+    "placeholder":"add comment",
+    "seeMore":"see more" , 
+    "seeLess":" see less ",
+    "loaderText": "Loading more posts... 🩺✨",
+    "endPosts": "You've reached the end of the posts 🎉",
+    "alert":"login or create account first"
+}
+,
+
+"pricing":{
+    "hero_title": "Grow and scale in Venera",
+    "hero_subtitle": "Choose the plan that fits your professional journey in dentistry",
+    "plans": {
+        "free": {
+            "type": "Free",
+            "price": "00",
+            "description": "Perfect for dental students and interns.",
+            "buttonText": "Start for Free",
+            "benefits": [
+                "Upload up to 5 cases/month",
+                "Public Profile link",
+                "Basic community access",
+                "Standard search visibility",
+                "Advanced Profile Analytics"
+            ]
+    },
+    "pro": {
+        "type": "Pro",
+        "price": "250",
+        "description": "Best for professional dentists building their brand.",
+        "buttonText": "Get Pro Now",
+        "benefits": [
+            "Unlimited case uploads",
+            "special Member qr code",
+            "Advanced Profile Analytics",
+            "High-resolution image storage",
+            "Standard search visibility",
+            "Direct WhatsApp contact and Gmail button"
+    ],
+        "badge": "Most Popular"
+    },
+    "business": {
+        "type": "Business",
+        "price": "400",
+        "description": "For dental clinics and medical centers.",
+        "buttonText": "Level It Up",
+        "benefits": [
+            "Multi-doctor accounts (up to 5)",
+            "Automatic Watermark on images",
+            "Featured placement in search",
+            "Priority support",
+            "Custom clinic branding",
+            "Export cases to PDF reports"
+    ],
+        "badge": "Coming Soon"
+    }
+}
+}
+,
+"register":{
+    "login":{
+        "title":"welcome back",
+        "google" : "login with google",
+        "email":"email addres",
+        "password":"password",
+        "forgot":"forgot? ",
+        "loginBtn":"login",
+        "dont":" don,t have an account ? ",
+        "create": "create account",
+        "or":"or"
+    },
+    "signUp":{
+        "title":"create account",
+        "name" : "full name",
+        "email":"email addres",
+        "password":"password",
+        "number":"phone number (whatsApp)",
+        "pic":"Profile Picture",
+        "bio":"bio",
+        "jobTitle":" job title ",
+        "i-am":{
+            "iam": "i am a",
+            "patient" : "patient/visitor",
+            "doctor":"doctor"
+        },
+        "loginBtn":"create account",
+        "already":" already have an account ? ",
+        "login": "login"
+    },
+    "alert":" please fill the inputs "
+},
+    "profile":{
+        "about":"about",
+        "certificates":"certificates",
+        "achievements":"activities and achievements",
+        "posts":"posts",
+        "view":"view your dashboard",
+        "noPosts":" no posts yet ",
+        "noAchievements":" no achievements yet ",
+        "noCerticates":" no Certicates yet ",
+        "alert":"login or sign up to see doctor's posts"
+
+    },
+    "dashboard":{
+        "qrTitle": "QR Code",
+        "qrSubtitle": "Scan the code to visit the doctor's profile on Venera",
+        "allPosts":"all posts",
+        "allLikes":"all likes",
+        "allComments":"all comments",
+        "posts":"your posts",
+        "like&comment":"likes and comments",
+        "add":{
+            "title":"add post",
+            "name":"post name (important)",
+            "type":{
+                "title":"post type",
+                "choose":" choose post type ",
+                "case":"case/post",
+                "achivement":"achivement",
+                "certificate":"certificate"
+            },
+            "desc":"case description (optional)",
+            "image":"case image (important for cases)",
+            "add":"add new post"
+        },
+        "settings":{
+            "update":"update profile",
+            "current":"current plan",
+            "upgrade":"upgrade plan",
+            "logout":"logout"
+        },
+        "alert":" your post must have a name or a specific type at least " , 
+        "addAlert" : "post added successfully",
+        "delAlert" : "post deleted successfully"
+    },
+    "checkout":{
+        "titles":{
+            "plans":" plans",
+            "subs":" subscriptions",
+            "methods":"payment methods"
+        },
+        "proSubs":{
+            "firstOption":"one month / 250 EGP",
+            "secondOption":"three months / 500 EGP",
+            "thirdOption":"six months / 1000 EGP",
+            "fourthOption":"one year / 2250 EGP"
+        },
+        "proOffers":{
+            "firstOffer":"one month free !!",
+            "secondOffer":"two months free !!",
+            "thirdOffer":"four months free !!"
+        }
+    },
+    "updateProfile": {
+    "bio": "Bio",
+    "title": "Title",
+    "name": "Name",
+    "image": "Profile Image"
+},
+"banners": {
+    "freeExperince": "Enjoy your experience as a Venera Pro user free for 3 months!"
+}
+}
