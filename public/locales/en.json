@@ -179,7 +179,8 @@
             "update":"update profile",
             "current":"current plan",
             "upgrade":"upgrade plan",
-            "logout":"logout"
+            "logout":"logout",
+            "change":"change languge"
         },
         "alert":" your post must have a name or a specific type at least " , 
         "addAlert" : "post added successfully",

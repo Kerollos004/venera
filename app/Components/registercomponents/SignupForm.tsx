@@ -237,7 +237,7 @@ export default function SignUpForm() {
                 </button>
             </form>
 
-            <div className="flex mt-6 justify-center items-center gap-2 text-sm opacity-80">
+            <div className="flex mt-6 justify-center  flex-col md:flex-row items-center gap-2 text-sm opacity-80">
                 <p>{t("register.signUp.already")}</p>
                 <button 
                     onClick={() => setForm("login")} 

@@ -11,10 +11,10 @@ export default function About() {
     const { mode } = useThemeContext()
     const aboutDivVariants:Variants = {
         hidden: {
-            opacity:0.05
-        }, 
+            y:30
+                }, 
         visible: {
-            opacity: 1,
+            y:0,
             transition: {
                 staggerChildren: .1,
                 duration: .1,

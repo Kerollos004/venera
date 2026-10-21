@@ -139,7 +139,7 @@ const handleGoogle = async () => {
                 </button>
             </form>
 
-            <div className="flex mt-8 justify-center items-center gap-2 text-sm opacity-80">
+            <div className="flex mt-8 justify-center flex-col md:flex-row items-center gap-2 text-sm opacity-80">
                 <p> {t("register.login.dont")}</p>
                 <button
                     onClick={() => setForm("signup")}
@@ -148,7 +148,7 @@ const handleGoogle = async () => {
                     {t("register.login.create")}
                 </button>
             </div>
-            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2    w-11/12 md:w-150 text-center  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
+            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2     w-11/12 md:w-150 text-center  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
         </article>
     )
 }
