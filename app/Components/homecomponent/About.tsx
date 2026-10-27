@@ -27,7 +27,7 @@ export default function About() {
 
     const aboutTextVariants:Variants   = {
         hidden: {
-            opacity:0.05
+            opacity:0.7
         }, 
         visible: {
             opacity:1
@@ -46,7 +46,7 @@ export default function About() {
             <motion.h3
                 initial={{ opacity: 0, y: "-20px" }}
                 whileInView={{ opacity: 1, y: "0" }}
-                viewport={{amount:.5}}
+                viewport={{amount:.5 , once:true}}
                 className='text-3xl md:text-5xl text-center text-blue-600 mb-3.5'
             >
                 {t("about.aboutTitle")}
@@ -56,7 +56,7 @@ export default function About() {
                 initial= "hidden"
                 whileInView="visible"
                 variants = {aboutDivVariants}
-                viewport={{amount:.7}}
+                viewport={{amount:.7 , once:true}}
                 className={`border-t-6 border-blue-600 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} w-full md:w-3/4 lg:w-4/5  p-4 rounded-2xl`}
             >
                 <motion.div className='text-2xl flex flex-wrap gap-1.5'>

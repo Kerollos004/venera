@@ -126,7 +126,7 @@ export default function SingleAchievement({ achievement }: { achievement: postTy
                 loading='lazy'
             /> 
 
-            <div className={`absolute bottom-3 left-3 flex py-1.5 px-3.5 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} rounded-3xl gap-2.5 shadow-md z-10`}>
+            <div className={`absolute bottom-3 left-3 flex py-1.5 px-3.5 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b]/80 text-white"} rounded-3xl gap-2.5 shadow-md z-10`}>
                 <div className={`flex items-center gap-1.5`}>
                     <HeartFill
                         className={`cursor-pointer text-lg ${heart ? "text-red-500" : ""}`}

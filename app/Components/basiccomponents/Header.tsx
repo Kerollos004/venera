@@ -36,22 +36,21 @@ export default function Header() {
         }
     }
     
-    const fetchUserData = async () => {
+const fetchUserData = async () => {
         const { data: authUser, error: authError } = await supabase.auth.getUser()
 
-        const userId = authUser?.user?.id
+    const userId = authUser?.user?.id
         
-        if (authError || !userId) {
+        if (authError || !userId ) {
             setUser(null)
             return
         }
-        
-        if (userId) {
+    if (userId) {
             const { data, error } = await supabase
             .from("users")
             .select("*")
-            .eq("id",userId )
-            .single()
+            .eq("id", userId)
+            .maybeSingle()
 
         if (error) {
             console.log("error in getting user data", error.message)
@@ -60,6 +59,8 @@ export default function Header() {
 
         if (data) {
             setUser(data) 
+        } else {
+            setUser(null) // لو السجل مش موجود في جدول users
         }
         }
     }
@@ -81,6 +82,7 @@ export default function Header() {
             subscription.unsubscribe()
         }
     }, [])
+    console.log(user)
 
     const handleScroll = () => {
         if (window.scrollY > 50) {
@@ -153,7 +155,8 @@ export default function Header() {
                 }`}
             initial={{ y: -200, opacity: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{duration:1}}
+            transition={{ duration: 1 }}
+            viewport={{once:true}}
         >
             <Image
                 src={logo}
@@ -186,36 +189,39 @@ export default function Header() {
                     } className='capitalize hover:text-blue-600 text-[18px] ' href={"/pricing"}> {t("navbar.pricing")} </Link>
                     </li>
                     <li>
-                        {
-                            session?.user.role === "authenticated" ?
-                                user?.doctorType === "dentist" ?
-                                    <Link
-                                        href={`profiles/${user?.id}`}>
-                                        <Image
-                                            src={user?.doctorImage ? user?.doctorImage : subImg}
-                                            alt='img'
-                                            width={200}
-                                            loading='lazy'
-                                            height={200}
-                                            className='w-16 h-16 border-2 border-blue-600 rounded-full cursor-pointer'
-                                        />
-                                    </Link> :
-                                        <Image
-                                            src={user?.doctorImage ? user?.doctorImage : subImg}
-                                        alt='img'
-                                        loading='lazy'
-                                            width={200}
-                                            height={200}
-                                            className='w-16 h-16 border-2 border-blue-600 rounded-full'
-                                        />
-                            :
-                                <Link onClick={() => {
-                                setActiveIcon(false)
-                                setActiveMenu(false)
-                                }} className='py-2 px-5 rounded-3xl text-white text-[18px]  bg-blue-600 hover:bg-blue-900' href={"/login"}> {t("navbar.login")}
-                                </Link>
-                        }
-                    </li>
+{
+    // لازم نتأكد إن الـ session موجودة وكمان الـ user و الـ id بتاعه مش undefined
+    session?.user && user?.id ? (
+        user?.doctorType === "dentist" ? (
+            <Link href={`/doctors/${user.id}`}>
+                <Image
+                    src={user?.doctorImage ? user.doctorImage : subImg}
+                    alt='img'
+                    width={100}
+                    loading='lazy'
+                    height={100}
+                    className='w-15 h-15 border-2 border-blue-600 rounded-full cursor-pointer'
+                />
+            </Link>
+            ) : (
+            <Link href={`/visitors/${user?.id}`}>
+                <Image
+                src={user?.doctorImage ? user.doctorImage : subImg}
+                alt='img'
+                loading='lazy'
+                width={100}
+                height={100}
+                className='w-15 h-15 border-2 object-cover border-blue-600 rounded-full'
+            />
+            </Link>
+        )
+    ) : (
+        <Link href={"/login"} className='px-5 py-2 rounded-3xl text-xl bg-blue-600 hover:bg-blue-800'>
+            {t("navbar.login")}
+        </Link>
+    )
+}
+</li>
 
                 </ul>
             </nav>

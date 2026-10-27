@@ -8,26 +8,28 @@ export default async function ProfilesPage({ params }: { params: Promise<{ id: s
         return
     }
 
-    const { data: profileData, error: userError } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-    if (userError || !profileData || !id) {
-        console.log("Error fetching user:", userError?.message);
-        return (
-            <main className='w-full min-h-screen px-3.5 md:px-10 pt-20 py-10'>
-                <h3 className='text-center text-xl text-red-500'>Profile not found</h3>
-            </main>
-        );
+    const fetchDoctor = async () => {
+        const { data } = await supabase.from("users")
+            .select("*")
+            .eq("id", id)
+            .eq("doctorType", "dentist")
+            .single()
+        if (data) {
+            return data
+        }
     }
+
+    const doctor = await fetchDoctor()
+
+
+
+
 
     const fetchUserPosts = async () => {
         const { data, error: postsError } = await supabase
             .from("posts")
             .select("*")
-            .eq("user_id", profileData.id);
+            .eq("user_id", doctor?.id);
         if (postsError) console.log("Error fetching posts:", postsError.message);
         return data ;
     }
@@ -39,7 +41,7 @@ export default async function ProfilesPage({ params }: { params: Promise<{ id: s
     const achievements = allposts?.filter(post => post?.type === "achievement");
 
     const fullProfile: ProfileType = {
-        ...profileData,
+        ...doctor,
         doctorPosts: cases, 
         doctorAchievements: achievements,
         doctorCertificates: certificates, 

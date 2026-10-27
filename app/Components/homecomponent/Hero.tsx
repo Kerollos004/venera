@@ -92,7 +92,7 @@ useEffect(() => {
 
     return (
         <section className='flex justify-center items-center w-full h-screen relative overflow-hidden'>
-            <motion.article initial="hidden" whileInView="visible" viewport={{amount:.2}} variants={textsVariants} className="w-11/12 md:w-xl text-center">
+            <motion.article initial="hidden" whileInView="visible" viewport={{amount:.2 , once:true}} variants={textsVariants} className="w-11/12 md:w-xl text-center">
                 <motion.h3
                 variants={textVariants}
                 className="text-5xl text-blue-600 mb-4"
@@ -117,7 +117,7 @@ useEffect(() => {
                 initial="hidden"
                 whileInView="visible"
                 variants={toothVariants}
-                viewport={{amount:0}}
+                viewport={{amount:0 , once:true}}
                 transition={{
                     duration: 1.2,
                     type:"spring",
@@ -137,7 +137,7 @@ useEffect(() => {
                 initial="hidden"
                 whileInView="visible"
                 variants={docVariants}
-                viewport={{amount:0}}
+                viewport={{amount:0 , once:true}}
                 transition={{ delay: .5 }}
                 className="absolute top-16 left-3 md:top-20 md:left-20  lg:top-20 lg:left-30"
             >

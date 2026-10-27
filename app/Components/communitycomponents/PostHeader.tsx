@@ -6,7 +6,7 @@ import { ProfileType } from '../assets/assets'
 export default function PostHeader({profile}:{profile:ProfileType}) {
     return (
             <div className="flex items-center gap-1.5  my-4">
-                <Link href={`/profiles/${profile.id}`}>
+                <Link href={`/doctors/${profile.id}`}>
                     <Image
                         src={profile?.doctorImage?profile?.doctorImage:subImg}
                         alt='img'

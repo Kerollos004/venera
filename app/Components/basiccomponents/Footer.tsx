@@ -35,7 +35,7 @@ export default function Footer() {
             return
         }
         if (data) {
-            const { data:senderData } = await supabase.from("users").select("*").eq("id", data?.user?.id).single()
+            const { data:senderData } = await supabase.from("users").select("*").eq("id", data?.user?.id).maybeSingle()
             setSender(senderData ? senderData  : {})
         }
     }

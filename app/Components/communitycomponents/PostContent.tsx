@@ -4,8 +4,7 @@ import React, { useEffect }  from 'react'
 import { useState } from 'react'
 import { HeartFill , ChatDotsFill } from 'react-bootstrap-icons'
 import {  useSelectedCommentContext, useThemeContext } from '../assets/contexts'
-// import PostComment from '../comments/PostComment'
-// import CommentForm from '../comments/CommentForm'
+
 import "../../reacti18"
 import { postType  } from '../assets/assets'
 import { useTranslation } from 'react-i18next'
@@ -63,6 +62,39 @@ useEffect(() => {
         handleDisplayPostComments();
 }, []); 
 
+
+
+const handleReact = async () => {
+    setHeart(!heart);
+        const newCount = !heart ? reacts + 1  :reacts - 1   
+        setReacts(newCount)
+        const { error } = await supabase
+        .from("posts")
+        .update({ likes: newCount })
+        .eq("id", post?.id);
+        
+        if (error) {
+            console.log("error in adding like", error.message);
+        };
+        await handleAddLikeOwner()
+    }
+    
+    const handleDoubleReact = async () => {
+        if (heart) return; 
+        setHeart(true);
+        const newCount = reacts + 1;
+        setReacts(newCount)
+        const { error } = await supabase
+        .from("posts")
+        .update({ likes: newCount })
+        .eq("id", post?.id);
+        
+        if (error) {
+            console.log("error in adding like", error.message);
+        };
+        await handleAddLikeOwner()
+    }
+
     const handleAddLikeOwner = async () => {
         const { data: owner, error: authErr } = await supabase.auth.getUser()
         if (authErr || !owner.user) {
@@ -90,33 +122,6 @@ useEffect(() => {
     }
 
 
-    const handleReact = async () => {
-        setHeart(!heart);
-        const newCount = !heart ? reacts + 1  :reacts - 1   
-        setReacts(newCount);
-        await addLikesToDb(newCount);
-        await handleAddLikeOwner()
-    }
-
-    const handleDoubleReact = async () => {
-        if (heart) return; 
-        setHeart(true);
-        const newCount = reacts + 1;
-        setReacts(newCount);
-        await addLikesToDb(newCount);
-        await handleAddLikeOwner()
-    }
-
-    const addLikesToDb = async (count: number) => {
-        const { error } = await supabase
-            .from("posts")
-            .update({ likes: count })
-            .eq("id", post?.id);
-            
-        if (error) {
-            console.log("error in adding like", error.message);
-        }
-    }
     return (
         // <div className=''>
         //     <div className="">

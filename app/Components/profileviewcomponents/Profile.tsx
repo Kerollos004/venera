@@ -21,37 +21,65 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     const { t } = useTranslation()
     const router = useRouter()
 
-    const [profileOwnerId, setProfileOwnerId] = useState<string | undefined>(undefined)
     const [activeAlert, setActiveAlert] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(true) 
+    const [isOwner, setIsOwner] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+    const [profileOwnerId, setProfileOwnerId] = useState<string | null>(null)
 
-    const checkAuthAndGetOwner = async () => {
+
+
+
+const checkAuth = async () => {
         setLoading(true)
-        
         const { data: { session }, error } = await supabase.auth.getSession()
 
         if (error || !session || !session.user) {
+            console.log("No active session found", error?.message)
             setIsAuthenticated(false)
-            setActiveAlert(true)
             setLoading(false)
-
-            setTimeout(() => {
-                router.push('/login')
-            }, 5000)
-            return
+            setActiveAlert(true)
+            router.push("/")
+        } else {
+            setIsAuthenticated(true)
+            setLoading(false)
+            setActiveAlert(false)
         }
-
-        setIsAuthenticated(true)
-        setProfileOwnerId(session.user.id)
-        setLoading(false)
     }
 
     useEffect(() => {
-        checkAuthAndGetOwner()
+        checkAuth()
     }, [])
 
-    // 1. حالة التحميل (Skeleton)
+const checkOwner = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (session?.user) {
+        setProfileOwnerId(session.user.id) 
+    } else {
+        setProfileOwnerId(null)
+    }
+    }
+    useEffect(() => {
+        if (profile?.id !== profileOwnerId) {
+            setIsOwner(false)
+        }
+        else {
+            setIsOwner(true)
+        }
+    }, [profile?.id, profileOwnerId])
+    
+    console.log(profile.id)
+    console.log(profileOwnerId)
+    console.log(isOwner)
+
+    useEffect(() => {
+        checkOwner()
+    } , [])
+
+
+
+
     if (loading) {
         return (
             <main className={`w-full min-h-screen md:pt-20 py-10 px-3.5 md:px-10 ${mode === "light" ? "bg-gray-100" : "bg-[#0f172a]"}`}>
@@ -113,7 +141,6 @@ export default function Profile({ profile }: { profile: ProfileType }) {
         )
     }
 
-    // 3. عرض الصفحة بشكل طبيعي للمسجلين فقط
     return (
         <main className={`w-full min-h-screen bg-fixed md:pt-20 py-10 px-3.5 md:px-10`}>
             <section className='flex flex-col md:flex-row items-center gap-2.5 justify-between mb-4'>
@@ -132,10 +159,12 @@ export default function Profile({ profile }: { profile: ProfileType }) {
                         <h3 className='text-4xl text-blue-500 mb-1 font-bold'>{profile.doctorName}</h3>
                         {profile.doctorTitle ? <p>{profile.doctorTitle}</p> : ""}
                     </article>
-                </article>
-                <Link className={`${profile?.id === profileOwnerId ? "block" : "hidden"} p-3 px-8 rounded-3xl border w-fit border-blue-600 hover:bg-blue-800 text-white font-semibold shadow-md transition`} href={`/dashboard/${profile?.id}`}> 
-                    {t("profile.view")} 
-                </Link>
+                    </article>
+                    <article className={`${!isOwner ? "hidden" : "inline-block"}`}>
+                        <Link className={` p-3 px-8 rounded-3xl border w-fit border-blue-600 hover:bg-blue-800 text-white font-semibold `} href={`/doctor_dashboard/${profile?.id}`}> 
+                            {t("profile.view")} 
+                        </Link>
+                    </article>
                 </article>
                 
 
@@ -158,7 +187,7 @@ export default function Profile({ profile }: { profile: ProfileType }) {
                 <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
                     <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.about")}</h3>
                     {profile?.doctorBio ? <p className='leading-relaxed'>{profile?.doctorBio}</p> : ""}
-                </article>
+            </article>
 
                 <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
                     <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.certificates")}</h3>

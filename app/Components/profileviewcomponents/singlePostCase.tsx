@@ -173,7 +173,7 @@ const checkUserLikeStatus = async () => {
             </div>
         </div>
     ) : (
-        <div className={`mt-3 flex w-fit py-2 px-4 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} rounded-3xl gap-2.5 shadow-sm`}>
+        <div className={`mt-3 flex w-fit py-2 px-4 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b]/80 text-white"} rounded-3xl gap-2.5 shadow-sm`}>
             <div className={`flex items-center gap-1.5`}>
                 <HeartFill
                     className={`cursor-pointer ${heart ? "text-red-500" : ""}`}

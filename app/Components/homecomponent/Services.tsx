@@ -32,7 +32,7 @@ export default function Services() {
             <motion.h3
                 initial={{ opacity: 0, y: "-20px" }}
                 whileInView={{ opacity: 1, y: "0" }}
-                viewport={{amount:.5}}
+                viewport={{amount:.5 , once:true}}
                 className="text-4xl text-center text-blue-600 mb-4"
             >
                 {t("services.serviceTitle")}
@@ -42,7 +42,7 @@ export default function Services() {
                 variants={boxsVariatns}
                 initial="hidden"
                 whileInView="visible"
-                viewport = {{amount:.4}}
+                viewport = {{amount:.4 , once:true}}
                 className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 "
             >
                 <motion.article variants={boxVariants}   className={` ${mode==="light"?"bg-gray-300 text-black":"bg-[#1e293b] text-white"}  p-5 rounded-3xl    border-t-6 border-blue-600`}>

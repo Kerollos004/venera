@@ -51,16 +51,15 @@ export interface Logintype{
 }
 
 export interface signupType{
-    name: string,
-    phoneNumber: string,
-    email: string,
-    image?: string,
+    doctorName: string,
+    doctorPhoneNumber: string,
+    doctorEmail: string,
+    doctorImage?: string,
     password: string,
-    type: string,
-    bio: string,
-    created_at: string,
-    id: number,
-    title:string
+    doctorType: string,
+    doctorBio: string,
+    id: string,
+    doctorTitle:string
 }
 
 //payment details
@@ -125,4 +124,10 @@ export const PaymentOffers: PaymentOffer[] = [
     }
 ]
 
-// support message
+//feed backs
+export interface feedBack {
+    id: string, 
+    feedback_owner: string,
+    feedback: string,
+    feedback_doctor:string
+}

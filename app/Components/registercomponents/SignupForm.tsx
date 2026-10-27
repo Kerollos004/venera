@@ -16,25 +16,24 @@ export default function SignUpForm() {
     const { t } = useTranslation()
     const [activeAlert , setActiveAlert] = useState <boolean> (false)
     const [user, setUser] = useState<signupType>({
-        id: 0,
-        created_at:"",
-        name: "",
-        phoneNumber: "",
-        email: "",
-        password: "",
-        image: "",
-        type: "",
-        bio: "",
-        title:""
+    doctorName: "",
+    doctorPhoneNumber: "",
+    doctorEmail: "",
+    doctorImage: "",
+    password: "",
+    doctorType: "",
+    doctorBio: "",
+        doctorTitle: "",
+    id:""
     })
     const router = useRouter()
 
     const handleCreate = async (e: React.MouseEvent) => {
         e.preventDefault()
 
-        if (user.name || user.email || user.password || user.phoneNumber) {
+        if (user.doctorName && user.doctorEmail && user.password && user.doctorPhoneNumber) {
         const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: user.email,
+            email: user.doctorEmail,
             password: user.password,
         })
 
@@ -49,18 +48,16 @@ export default function SignUpForm() {
             
             const { error: dbError } = await supabase
                 .from('users') 
-                .insert([
-                    {
-                        id: userId, 
-                        name: user.name,
-                        phoneNumber: user.phoneNumber,
-                        email: user.email,
-                        image: user.image,
-                        type: user.type,
-                        bio: user.bio
-                    }
-                ]);
-
+                .insert({
+                    id: userId,
+                    doctorTitle:user?.doctorTitle,
+                    doctorName: user?.doctorName,
+                    doctorImage: user?.doctorImage,
+                    doctorType: user?.doctorType || "visitor" ,
+                    doctorBio: user?.doctorBio,
+                    doctorEmail:user?.doctorEmail,
+                    doctorPhoneNumber:user?.doctorPhoneNumber
+                });
             if (dbError) {
                 console.error("Error inserting into users table:", dbError.message);
             }
@@ -73,16 +70,15 @@ export default function SignUpForm() {
         }
 
         setUser({
-            id: 0,
-            created_at:"",
-            name: "",
-            phoneNumber: "",
-            email: "",
-            password: "",
-            image: "",
-            type: "",
-            bio: "",
-            title:""
+    doctorName: "",
+    doctorPhoneNumber: "",
+    doctorEmail: "",
+    doctorImage: "",
+    password: "",
+    doctorType: "",
+    doctorBio: "",
+    id: "",
+    doctorTitle:""
         })
         router.push("/")
     }
@@ -108,8 +104,8 @@ export default function SignUpForm() {
                     <label className='text-sm font-semibold' htmlFor="name"> {t("register.signUp.name")} </label>
                     <input 
                         name="name"
-                        value={user.name} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , name:e.target.value})}}
+                        value={user.doctorName} 
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorName:e.target.value})}}
                         className={inputStyle} 
                         type="text" 
                         placeholder='Dr. Ahmed Ali' 
@@ -122,8 +118,8 @@ export default function SignUpForm() {
                     <label className='text-sm font-semibold' htmlFor="phoneNumber">{t("register.signUp.number")}</label>
                     <input 
                         name="phoneNumber"
-                        value={user.phoneNumber} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , phoneNumber:e.target.value})}}
+                        value={user.doctorPhoneNumber} 
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorPhoneNumber:e.target.value})}}
                         className={inputStyle} 
                         type="tel" 
                         placeholder='010xxxxxxx' 
@@ -136,8 +132,8 @@ export default function SignUpForm() {
                     <label className='text-sm font-semibold' htmlFor="email">{t("register.signUp.email")} </label>
                     <input 
                         name="email"
-                        value={user.email} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , email:e.target.value})}}
+                        value={user.doctorEmail} 
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorEmail:e.target.value})}}
                         className={inputStyle} 
                         type="email" 
                         placeholder='name@venera.com' 
@@ -171,13 +167,15 @@ export default function SignUpForm() {
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold'>{t("register.signUp.i-am.iam")}</label>
                     <select 
+                        defaultValue="visitor"
                         name="role"
                         onChange={(e:React.ChangeEvent<HTMLSelectElement>) => {
-                            setUser({...user , type:e.target.value})
+                            setUser({...user , doctorType:e.target.value})
                         }}
                         className={inputStyle}
                     >
-                        <option value="student">{t("register.signUp.i-am.patient")}</option>
+                        <option  disabled>{t("register.signUp.i-am.choose") }</option>
+                        <option value="visitor">{t("register.signUp.i-am.patient")}</option>
                         <option value="dentist">{t("register.signUp.i-am.doctor")}</option>
                     </select>
                 </div>
@@ -194,7 +192,7 @@ export default function SignUpForm() {
                             if (file) {
                                 const reader = new FileReader();
                                 reader.onload = () => {
-                                    setUser({ ...user, image: reader.result as string });
+                                    setUser({ ...user, doctorImage: reader.result as string });
                                 };
                                 reader.readAsDataURL(file); // السطر ده كان ناقص في كودك!
                             }
@@ -203,27 +201,27 @@ export default function SignUpForm() {
                 </div>
 
                 {/* title */}
-                <div className={`  ${user.type==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
                     <label className='text-sm font-semibold'>{t("register.signUp.jobTitle")}</label>
                     <textarea 
                         placeholder=' bachelor of dentistry'
-                        value={user.title}
+                        value={user.doctorTitle}
                         className={`${inputStyle} `} 
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setUser({...user , title:e.target.value})
+                            setUser({...user , doctorTitle:e.target.value})
                         }}
                     />
                 </div>
 
                 {/* bio */}
-                <div className={`  ${user.type==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
                     <label className='text-sm font-semibold'>{t("register.signUp.bio")}</label>
                     <textarea 
                         placeholder='i am a dentist...'
-                        value={user.bio}
+                        value={user.doctorBio}
                         className={`${inputStyle} `} 
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setUser({...user , bio:e.target.value})
+                            setUser({...user , doctorBio:e.target.value})
                         }}
                     />
                 </div>

@@ -50,22 +50,21 @@ export default function LoginForm() {
     }
 
 const handleGoogle = async () => {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                // This route must process the temporary code 
-                redirectTo: 'https://venera-orcin.vercel.app',
-                queryParams: {
-                    access_type: 'offline',
-                    prompt: 'consent',
-                },
+    const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: 'https://venera-orcin.vercel.app',
+            queryParams: {
+                access_type: 'offline',
+                prompt: 'consent',
             },
-        })
-    if (error || !data) {
-        console.log("login error", error?.message)
-        return
+        },
+    })
+
+    if (error) {
+        console.log("login error", error.message)
     }
-    }
+}
     
 
     return (

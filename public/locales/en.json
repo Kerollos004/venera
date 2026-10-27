@@ -132,6 +132,7 @@
         "jobTitle":" job title ",
         "i-am":{
             "iam": "i am a",
+            "choose":"choose your identity",
             "patient" : "patient/visitor",
             "doctor":"doctor"
         },

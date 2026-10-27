@@ -53,7 +53,7 @@ export default function MobMenu() {
             setSession(data?.session)
         }
         
-    const fetchUserData = async () => {
+const fetchUserData = async () => {
         const { data: authUser, error: authError } = await supabase.auth.getUser()
 
         const userId = authUser?.user?.id
@@ -63,12 +63,12 @@ export default function MobMenu() {
             return
         }
         
-        if (userId) {
+    if (userId) {
             const { data, error } = await supabase
             .from("users")
             .select("*")
-            .eq("id",userId )
-            .single()
+            .eq("id", userId)
+            .maybeSingle()
 
         if (error) {
             console.log("error in getting user data", error.message)
@@ -77,6 +77,8 @@ export default function MobMenu() {
 
         if (data) {
             setUser(data) 
+        } else {
+            setUser(null) // لو السجل مش موجود في جدول users
         }
         }
     }
@@ -116,34 +118,38 @@ export default function MobMenu() {
             <Link  href={"/pricing"} className='flex items-center justify-center p-3 text-3xl'>
                 <CashCoin className='hover:text-blue-600'/>
             </Link>
-            {
-                session?.user.role === "authenticated" ?
-                    user?.doctorType === "dentist" ?
-                        <Link
-                            href={`profiles/${user?.id}`}
-                        >
-                            <Image
-                                src={user?.doctorImage ? user?.doctorImage : subImg}
-                                alt='img'
-                                width={100}
-                                loading='lazy'
-                                height={100}
-                                className=' w-15 h-15  border-2 border-blue-600 rounded-full cursor-pointer'
-                            />
-                        </Link> :
-                            <Image
-                                src={user?.doctorImage ? user?.doctorImage : subImg}
-                            alt='img'
-                            loading='lazy'
-                                width={100}
-                                height={100}
-                                className='aspect-square border-2 border-blue-600 rounded-full'
-                            />
-                            :
-                <Link href={"/login"} className='flex items-center justify-center p-3 text-3xl'>
-                <PersonFill className='hover:text-blue-600'/>
-                </Link>
-            }
+{
+    // لازم نتأكد إن الـ session موجودة وكمان الـ user و الـ id بتاعه مش undefined
+    session?.user && user?.id ? (
+        user?.doctorType === "dentist" ? (
+            <Link href={`/profiles/${user.id}`}>
+                <Image
+                    src={user?.doctorImage ? user.doctorImage : subImg}
+                    alt='img'
+                    width={100}
+                    loading='lazy'
+                    height={100}
+                    className='w-15 h-15 border-2 border-blue-600 rounded-full cursor-pointer'
+                />
+            </Link>
+            ) : (
+            <Link href={`/visitors/${user?.id}`}>
+                <Image
+                src={user?.doctorImage ? user.doctorImage : subImg}
+                alt='img'
+                loading='lazy'
+                width={100}
+                height={100}
+                className='w-15 h-15 object-cover border-2 border-blue-600 rounded-full'
+            />
+            </Link>
+        )
+    ) : (
+        <Link href={"/login"} className='flex items-center justify-center p-3 text-3xl'>
+            <PersonFill className='hover:text-blue-600'/>
+        </Link>
+    )
+}
             <div className='flex items-center justify-center p-3 text-3xl'>
                 <ModeIcon onClick={handleMode} className='hover:text-blue-600'/>
             </div>            
