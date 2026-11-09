@@ -6,11 +6,16 @@ import Footer from "./Components/basiccomponents/Footer";
 import MobMenu from "./Components/basiccomponents/MobMenu";
 // import Checkout from "./Components/checkoutcomponents/Checkout";
 
-export const metadata:Metadata = {
+
+export const metadata: Metadata = {
   title: "Venera",
   description: "Dental Community Platform",
-  manifest: "/manifest.json", // 👈 ربط ملف المانيفست هنا
-  themeColor: "#2563eb",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/images/Gemini_Generated_Image_d2y7e3d2y7e3d2y7.png",
+    shortcut: "/images/Gemini_Generated_Image_d2y7e3d2y7e3d2y7.png",
+    apple: "/images/Gemini_Generated_Image_d2y7e3d2y7e3d2y7.png",
+  }
 };
 
 export default function RootLayout({
