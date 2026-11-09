@@ -8,18 +8,31 @@ export default async function ProfilesPage({ params }: { params: Promise<{ id: s
         return
     }
 
-    const fetchDoctor = async () => {
-        const { data } = await supabase.from("users")
-            .select("*")
-            .eq("id", id)
-            .eq("doctorType", "dentist")
-            .single()
-        if (data) {
-            return data
+    const getSession = async () => {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (!session || error) {
+            console.log("error in getting session" , error?.message)
         }
     }
 
-    const doctor = await fetchDoctor()
+    await getSession()
+
+    const fetchDoctors = async () => {
+        const { data , error} = await supabase.from("users")
+            .select("*")
+            .eq("id", id)
+            .eq("doctorType", "dentist")
+            .maybeSingle()
+        if (data) {
+            return data
+        }
+        else {
+            console.log("error in getting data  " , error?.message)
+            return
+        }
+    }
+
+    const doctor = await fetchDoctors()
 
 
 
@@ -29,12 +42,23 @@ export default async function ProfilesPage({ params }: { params: Promise<{ id: s
         const { data, error: postsError } = await supabase
             .from("posts")
             .select("*")
-            .eq("user_id", doctor?.id);
+            .eq("user_id", doctor?.id)
+            .order("created_at", { ascending: false });
         if (postsError) console.log("Error fetching posts:", postsError.message);
         return data ;
     }
 
-    const allposts = await fetchUserPosts() || []
+    const allposts = await fetchUserPosts() || [] 
+    
+    const fetchUserFeedbacks = async () => {
+        const { data, error: postsError } = await supabase
+            .from("feedbacks")
+            .select("*")
+            .eq("feedback_doctor", doctor?.id);
+        if (postsError) console.log("Error fetching posts:", postsError.message);
+        return data ;
+    }
+    const feedbacks = await fetchUserFeedbacks() || []
 
     const cases = allposts?.filter(post => post?.type === "case");
     const certificates = allposts?.filter(post => post?.type === "certificate");
@@ -45,6 +69,7 @@ export default async function ProfilesPage({ params }: { params: Promise<{ id: s
         doctorPosts: cases, 
         doctorAchievements: achievements,
         doctorCertificates: certificates, 
+        doctorFeedbacks : feedbacks
     };
 
     return (

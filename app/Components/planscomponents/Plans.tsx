@@ -65,9 +65,9 @@ export default function Plans() {
                             </p>
                         </div>
                     </div>
-                    <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px]  text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
+                    {/* <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px]  text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
                         {t("pricing.plans.free.buttonText")}
-                    </button>
+                    </button> */}
                 </article>
 
                 {/* 2. Pro Plan */}
@@ -104,9 +104,9 @@ export default function Plans() {
                             </p>
                         </div>
                     </div>
-                    <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px] text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
+                    {/* <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px] text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
                         {t("pricing.plans.pro.buttonText")}
-                    </button>
+                    </button> */}
                     <span className="p-3.5 bg-blue-600 text-white rounded-br-4xl absolute top-0 right-0">
                         {t("pricing.plans.pro.badge", { defaultValue: "most popular" })}
                     </span>
@@ -146,9 +146,9 @@ export default function Plans() {
                             </p>
                         </div>
                     </div>
-                    <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px] text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
+                    {/* <button onClick={() => setOpenCheckout(true)} className='p-2.5 w-full text-center text-[19px] text-white bg-blue-600 hover:bg-blue-900 absolute bottom-0 left-0'>
                         {t("pricing.plans.business.buttonText")}
-                    </button>
+                    </button> */}
                     <span className={`p-3.5 ${mode === "light" ? "bg-gray-400" :" bg-gray-700"} text-white rounded-br-4xl absolute top-0 right-0`}>
                         {t("pricing.plans.business.badge", { defaultValue: "coming soon" })}
                     </span>

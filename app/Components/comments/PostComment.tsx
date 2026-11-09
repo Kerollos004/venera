@@ -31,7 +31,8 @@ export default function PostComments({ postId }: { postId: string }) {
                 const { data, error } = await supabase
                     .from("comments")
                     .select("*")
-                    .eq("post_id", postId);
+                    .eq("post_id", postId)      
+                    .order("created_at", { ascending: false });
 
                 if (error) {
                     console.log("Error fetching comments:", error.message);

@@ -23,10 +23,6 @@ export default function LoginForm() {
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Login Attempt:", user);
-    }
 
     const inputStyle = `p-2.5 focus:border-blue-500 ou mb-1 border rounded-xl transition-all w-full ${
         mode === "light" ? "bg-white border-gray-300" : "bg-gray-800 border-gray-600 text-white"
@@ -49,23 +45,24 @@ export default function LoginForm() {
         }
     }
 
-const handleGoogle = async () => {
+const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: 'https://venera-orcin.vercel.app',
+            redirectTo: `/`,
             queryParams: {
                 access_type: 'offline',
-                prompt: 'consent',
+                prompt: 'select_account', 
             },
         },
-    })
+    });
 
     if (error) {
-        console.log("login error", error.message)
+        console.error("Google OAuth error:", error.message);
     }
-}
+    };
     
+
 
     return (
         <article className={`p-6 rounded-2xl shadow-xl transition-all ${
@@ -78,7 +75,7 @@ const handleGoogle = async () => {
 
             <button onClick={async (e:React.MouseEvent) => {
                 e.preventDefault()
-                await handleGoogle()
+                await handleGoogleLogin()
             }} className='p-2.5 w-full flex justify-center text-[16px] font-semibold items-center gap-2.5 text-white rounded-xl bg-blue-600 hover:bg-blue-900  mb-6 '>
                 <Google size={20}/> {t("register.login.google")}
             </button>
@@ -90,7 +87,7 @@ const handleGoogle = async () => {
                 <div className="grow border-t border-gray-400 opacity-30"></div>
             </div>
 
-            <form onSubmit={handleSubmit} className='space-y-4'>
+            <form className='space-y-4'>
                 {/* Email Field */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-semibold" htmlFor="email">{t("register.login.email")}</label>

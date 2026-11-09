@@ -6,9 +6,11 @@ import Footer from "./Components/basiccomponents/Footer";
 import MobMenu from "./Components/basiccomponents/MobMenu";
 // import Checkout from "./Components/checkoutcomponents/Checkout";
 
-export const metadata: Metadata = {
-  title: "venera",
-  description: "venera saas app",
+export const metadata:Metadata = {
+  title: "Venera",
+  description: "Dental Community Platform",
+  manifest: "/manifest.json", // 👈 ربط ملف المانيفست هنا
+  themeColor: "#2563eb",
 };
 
 export default function RootLayout({

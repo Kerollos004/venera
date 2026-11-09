@@ -147,9 +147,11 @@
         "certificates":"certificates",
         "achievements":"activities and achievements",
         "posts":"posts",
+        "feedbacks":"feedbacks",
         "view":"view your dashboard",
         "noPosts":" no posts yet ",
         "noAchievements":" no achievements yet ",
+        "noFeedbacks":" no feedbacks yet ",
         "noCerticates":" no Certicates yet ",
         "alert":"login or sign up to see doctor's posts"
 

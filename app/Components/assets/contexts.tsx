@@ -55,7 +55,7 @@ export const useFormContext = () => {
 
 //ThemeProvider
 export const FormProvider = ({ children }: { children: ReactNode }) => {
-    const [form, setForm] = useState<string>("login");
+    const [form, setForm] = useState<string>("create account");
     return (
         <formContext.Provider value={{ form, setForm }}>
             {children}

@@ -15,7 +15,8 @@ import "../../reacti18"
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../assets/supabase-client'
 import { useRouter } from 'next/navigation'
-
+import AddFeedBack from './AddFeedBack'
+import Feedback from './FeedBack'
 export default function Profile({ profile }: { profile: ProfileType }) {
     const { mode } = useThemeContext()
     const { t } = useTranslation()
@@ -26,6 +27,7 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     const [loading, setLoading] = useState<boolean>(true)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [profileOwnerId, setProfileOwnerId] = useState<string | null>(null)
+    const [openFeedBack , setOpenedFeedBack] = useState<boolean>(false)
 
 
 
@@ -69,9 +71,7 @@ const checkOwner = async () => {
         }
     }, [profile?.id, profileOwnerId])
     
-    console.log(profile.id)
-    console.log(profileOwnerId)
-    console.log(isOwner)
+
 
     useEffect(() => {
         checkOwner()
@@ -134,7 +134,7 @@ const checkOwner = async () => {
                         {t("profile.alert") || "Please login or sign up to view this profile"}
                     </h3>
                     <Link href="/login" className='inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition'>
-                        {t("navbar.login") || "Login Now"}
+                        {t("navbar.login")}
                     </Link>
                 </div>
             </main>
@@ -160,8 +160,8 @@ const checkOwner = async () => {
                         {profile.doctorTitle ? <p>{profile.doctorTitle}</p> : ""}
                     </article>
                     </article>
-                    <article className={`${!isOwner ? "hidden" : "inline-block"}`}>
-                        <Link className={` p-3 px-8 rounded-3xl border w-fit border-blue-600 hover:bg-blue-800 text-white font-semibold `} href={`/doctor_dashboard/${profile?.id}`}> 
+                    <article className={``}>
+                        <Link className={` p-3 px-8 rounded-3xl ${!isOwner ? "hidden" : "inline-block"} border w-fit border-blue-600 hover:bg-blue-800  font-semibold `} href={`/doctor_dashboard/${profile?.id}`}> 
                             {t("profile.view")} 
                         </Link>
                     </article>
@@ -206,7 +206,27 @@ const checkOwner = async () => {
                         <h3 className='text-xl text-center text-blue-600 capitalize'>{t("profile.noAchievements")}</h3>
                     )}
                 </article>
+
+                <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
+                    <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.feedbacks")}</h3>
+                    {profile?.doctorFeedbacks && profile.doctorFeedbacks.length > 0 ? (
+                        <Feedback feedbacks={profile.doctorFeedbacks} />
+                    ) : (
+                        <h3 className='text-xl text-center text-blue-600 capitalize'>{t("profile.noFeedbacks")}</h3>
+                    )}
+                    <div className="flex mt-2  justify-center ">
+                        <button
+                            onClick={(e:React.MouseEvent) => {
+                                e.preventDefault()
+                                setOpenedFeedBack(true)
+                            }}
+                            className={`p-3  ${isAuthenticated?"inline-block" :"hidden "} rounded-3xl bg-blue-600 hover:bg-blue-800`}> add feedback </button>
+                    </div>
+                    <AddFeedBack id={profile?.id} opened={openFeedBack} setOPened={setOpenedFeedBack} />
+                </article>
             </section>
+
+            
 
             <section className={`mt-3.5 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} p-3 md:px-20 lg:px-40 rounded-2xl border-b-8 border-blue-600`}>
                 <h3 className="text-3xl font-bold text-blue-600 mb-4">{t("profile.posts")}</h3>

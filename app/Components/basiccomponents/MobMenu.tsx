@@ -122,7 +122,7 @@ const fetchUserData = async () => {
     // لازم نتأكد إن الـ session موجودة وكمان الـ user و الـ id بتاعه مش undefined
     session?.user && user?.id ? (
         user?.doctorType === "dentist" ? (
-            <Link href={`/profiles/${user.id}`}>
+            <Link href={`/doctors/${user.id}`}>
                 <Image
                     src={user?.doctorImage ? user.doctorImage : subImg}
                     alt='img'

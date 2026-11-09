@@ -81,6 +81,7 @@ export default function SignUpForm() {
     doctorTitle:""
         })
         router.push("/")
+        
     }
 
 

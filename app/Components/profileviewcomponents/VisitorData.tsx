@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import React from 'react'
-import { ProfileType } from '../assets/assets'
+import { feedBack, ProfileType } from '../assets/assets'
 import Image from 'next/image'
 import { ArrowRepeat , BoxArrowLeft } from 'react-bootstrap-icons'
 import subImg from "../../../public/images/doc-removebg-preview.png"
@@ -11,13 +11,13 @@ import "../../reacti18"
 import { useEffect , useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import VisitorsFeedBacks from './VisitorsFeedBacks'
-export default function VisitorData({ visitor }: { visitor: ProfileType }) {
+export default function VisitorData({ visitor , feedBacks }: { visitor: ProfileType , feedBacks:feedBack[] }) {
     const { t, i18n } = useTranslation()
 const [user, setUser] = useState<ProfileType | null>(null)
-const router = useRouter()
+    const router = useRouter()
+    
 
 const getUser = async () => {
-    // 1. هات يوزر الـ Auth الأول عشان تتاكد من الـ ID
     const { data: authData, error: authError } = await supabase.auth.getUser()
     
     if (authError || !authData?.user) {
@@ -27,21 +27,23 @@ const getUser = async () => {
     }
 
     const userId = authData.user.id
-
-    const { data: profileData, error: profileError } = await supabase
+    if (userId) {
+        const { data: profileData, error: profileError } = await supabase
         .from("users")
         .select("*")
         .eq("id", userId)
         .maybeSingle()
-
-    if (profileError) {
+        
+        if (profileError) {
         console.log("error in getting profile data", profileError.message)
         return
+        }
+        if (profileData) {
+            setUser(profileData) 
+    }
     }
 
-    if (profileData) {
-        setUser(profileData) 
-    }
+
 }
 
 useEffect(() => {
@@ -73,7 +75,7 @@ useEffect(() => {
                     className='rounded-full w-32 h-32 border-2 border-blue-500 object-cover'
                     loading='lazy'
                 />
-                <h3 className='text-4xl text-blue-500 mb-1 font-bold'>{visitor.doctorName}</h3>
+                <h3 className='text-4xl text-blue-500 mb-1 font-bold'>{visitor?.doctorName}</h3>
                 </article>
                 <article className={`${user?.id === visitor?.id  ?"grid":"hidden"} grid-cols-1 md:grid-cols-2  gap-2 items-center`}>
                         <button
@@ -96,7 +98,7 @@ useEffect(() => {
                     </button>
                 </article>
             </article>
-            <VisitorsFeedBacks profile={visitor} />
+            <VisitorsFeedBacks feedBacks={feedBacks} profile={visitor} />
         </>
     )
 }

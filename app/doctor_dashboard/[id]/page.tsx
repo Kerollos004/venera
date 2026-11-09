@@ -30,7 +30,8 @@ export default async function Dashboard({ params }: { params: Promise<{ id: stri
         const { data , error: postsError } = await supabase
         .from("posts")
         .select("*")
-        .eq("user_id", profile.id);
+        .eq("user_id", profile.id)
+        .order("created_at", { ascending: false });
         if (postsError) console.log("Error fetching posts:", postsError.message);
         return data
     }
@@ -57,8 +58,8 @@ const getPostComments = async () => {
         const { data, error } = await supabase
             .from("comments")
             .select("*")
-            .in("post_id", postIds); 
-
+            .in("post_id", postIds)
+            .order("created_at", { ascending: false });
         if (error) {
             console.log("error in getting comments", error.message);
             return [];

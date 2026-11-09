@@ -40,7 +40,6 @@ const fetchUserData = async () => {
         const { data: authUser, error: authError } = await supabase.auth.getUser()
 
     const userId = authUser?.user?.id
-        
         if (authError || !userId ) {
             setUser(null)
             return
@@ -82,7 +81,6 @@ const fetchUserData = async () => {
             subscription.unsubscribe()
         }
     }, [])
-    console.log(user)
 
     const handleScroll = () => {
         if (window.scrollY > 50) {

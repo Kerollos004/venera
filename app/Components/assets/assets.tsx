@@ -38,7 +38,8 @@ export interface ProfileType {
     doctorPhoneNumber: string,
     doctorEmail: string,
     is_admin?:boolean , 
-    created_at : string  
+    created_at: string,
+    doctorFeedbacks: feedBack[]
 }
 
 
@@ -126,8 +127,9 @@ export const PaymentOffers: PaymentOffer[] = [
 
 //feed backs
 export interface feedBack {
-    id: string, 
-    feedback_owner: string,
-    feedback: string,
-    feedback_doctor:string
+    id?: string, 
+    feedback_owner?: string,
+    feedback?: string,
+    feedback_doctor?: string,
+    feedback_rate?:number
 }
