@@ -112,7 +112,7 @@ export default function Footer() {
                 <ul className="flex flex-col items-center gap-3">
                     <li><Link className='hover:text-blue-500 transition-all hover:pl-2' href="/">{t("footer.links.home")}</Link></li>
                     <li><Link className='hover:text-blue-500 transition-all hover:pl-2' href="/feed">{t("footer.links.community")}</Link></li>
-                    <li><Link className='hover:text-blue-500 transition-all hover:pl-2' href="/Pricing">{t("footer.links.pricing")}</Link></li>
+                    <li><Link className='hover:text-blue-500 transition-all hover:pl-2' href="/pricing">{t("footer.links.pricing")}</Link></li>
                 </ul>
             </article>
 
