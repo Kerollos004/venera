@@ -39,7 +39,8 @@ export interface ProfileType {
     doctorEmail: string,
     is_admin?:boolean , 
     created_at: string,
-    doctorFeedbacks: feedBack[]
+    doctorFeedbacks: feedBack[],
+    doctorAddress:string
 }
 
 
@@ -60,7 +61,8 @@ export interface signupType{
     doctorType: string,
     doctorBio: string,
     id: string,
-    doctorTitle:string
+    doctorTitle: string,
+    doctorAddress:string
 }
 
 //payment details

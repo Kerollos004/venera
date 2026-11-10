@@ -24,7 +24,8 @@ export default function SignUpForm() {
     doctorType: "",
     doctorBio: "",
         doctorTitle: "",
-    id:""
+        id: "",
+    doctorAddress:""
     })
     const router = useRouter()
 
@@ -56,7 +57,8 @@ export default function SignUpForm() {
                     doctorType: user?.doctorType || "visitor" ,
                     doctorBio: user?.doctorBio,
                     doctorEmail:user?.doctorEmail,
-                    doctorPhoneNumber:user?.doctorPhoneNumber
+                    doctorPhoneNumber: user?.doctorPhoneNumber,
+                    doctorAddress:user?.doctorAddress
                 });
             if (dbError) {
                 console.error("Error inserting into users table:", dbError.message);
@@ -78,7 +80,8 @@ export default function SignUpForm() {
     doctorType: "",
     doctorBio: "",
     id: "",
-    doctorTitle:""
+            doctorTitle: "",
+    doctorAddress:""
         })
         router.push("/")
         
@@ -197,6 +200,19 @@ export default function SignUpForm() {
                                 };
                                 reader.readAsDataURL(file); // السطر ده كان ناقص في كودك!
                             }
+                        }}
+                    />
+                </div>
+
+                {/* address */}
+                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                    <label className='text-sm font-semibold'>{t("register.signUp.address")}</label>
+                    <input
+                        placeholder=' bachelor of dentistry'
+                        value={user.doctorAddress}
+                        className={`${inputStyle} `} 
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setUser({...user , doctorAddress:e.target.value})
                         }}
                     />
                 </div>

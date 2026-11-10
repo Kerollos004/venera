@@ -130,6 +130,7 @@
         "pic":"Profile Picture",
         "bio":"bio",
         "jobTitle":" job title ",
+        "address":"address",
         "i-am":{
             "iam": "i am a",
             "choose":"choose your identity",

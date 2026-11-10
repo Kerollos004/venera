@@ -8,7 +8,7 @@ import { ProfileType } from '../assets/assets'
 import Certificate from './Certificate'
 import Achievments from './Achievment'
 import ProfilePost from './ProfilePost'
-import { Whatsapp, Envelope } from 'react-bootstrap-icons'
+import { Whatsapp, Envelope  , GeoAltFill} from 'react-bootstrap-icons'
 import Link from 'next/link'
 import subImg from "../../../public/images/doc-removebg-preview.png"
 import "../../reacti18"
@@ -171,7 +171,8 @@ const checkOwner = async () => {
                 <article className={`${profile?.currentPlan === "free" ? "hidden" : "flex"} items-center gap-2`}>
                     <a href={`https://wa.me/${profile?.doctorPhoneNumber}`} target="_blank" rel="noopener noreferrer" className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 transition`}> 
                         <Whatsapp /> 
-                    </a>    
+                    </a> 
+                    
                     <a 
                         href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile?.doctorEmail}`} 
                         target="_blank" 
@@ -180,6 +181,16 @@ const checkOwner = async () => {
                     > 
                         <Envelope /> 
                     </a>
+
+                    <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile?.doctorAddress || '')}`}
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 transition`}
+                    >
+                        <GeoAltFill/>
+                    </a>
+
                 </article>
             </section>
 
