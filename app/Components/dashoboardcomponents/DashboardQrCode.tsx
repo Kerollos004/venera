@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 export default function DashboardQRCode({ profile }: { profile: ProfileType }) {
     const { mode } = useThemeContext()
-    const doctorProfileUrl = `https://venera-two.vercel.app/doctor_dashboard${profile?.id}`
+    const doctorProfileUrl = `https://venera-two.vercel.app/doctors/${profile?.id}`
     const {t} = useTranslation()
 
 
