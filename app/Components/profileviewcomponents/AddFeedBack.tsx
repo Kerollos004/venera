@@ -6,11 +6,12 @@ import { StarFill } from 'react-bootstrap-icons'
 import { useThemeContext } from '../assets/contexts'
 import { feedBack } from '../assets/assets'
 import { supabase } from '../assets/supabase-client'
+import { useTranslation } from 'react-i18next'
 
 export default function AddFeedBack({ opened, setOPened, id }: { opened: boolean, setOPened: Dispatch<SetStateAction<boolean>>, id: string }) { 
     const { mode } = useThemeContext()
+    const { t } = useTranslation()
     
-    // بداءنا الـ state بأوبجكت افتراضي عشان نتجنب الـ null errors
     const [newFeedBack, setNewFeedBack] = useState<Partial<feedBack>>({
         feedback: '',
         feedback_rate: 0,
@@ -48,7 +49,6 @@ export default function AddFeedBack({ opened, setOPened, id }: { opened: boolean
             console.log("error in adding feedbacks", error?.message)
         } else {
             console.log("Feedback added successfully", data)
-            // تفريغ الفورم وقفل الدرج بعد الإرسال الناجح
             setNewFeedBack({ feedback: '', feedback_rate: 0, feedback_doctor: id, feedback_owner: newFeedBack.feedback_owner })
             setClickedStars(0)
             setOPened(false)
@@ -65,7 +65,6 @@ export default function AddFeedBack({ opened, setOPened, id }: { opened: boolean
                     key={i}
                     onClick={() => {
                         setClickedStars(starNumber)
-                        // استخدام starNumber مباشرة يضمن أن القيمة الحقيقية بتتسجل فوراً مش القديمة
                         setNewFeedBack(prev => ({ ...prev, feedback_rate: starNumber }))
                     }} 
                     size={24} 
@@ -89,21 +88,19 @@ export default function AddFeedBack({ opened, setOPened, id }: { opened: boolean
                 
                 <DrawerHeader>
                     <DrawerTitle className="mb-2.5 capitalize text-center text-3xl text-blue-600">
-                        add feedback
+                        {t("feedback.title")}
                     </DrawerTitle>
                 </DrawerHeader>
 
                 <div className="p-4 mb-3 flex flex-col items-center gap-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     <textarea 
-                        name="" 
-                        id="" 
                         value={newFeedBack?.feedback || ''}
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             e.preventDefault()
                             const val = e.target.value
                             setNewFeedBack(prev => ({ ...prev, feedback: val }))
                         }}
-                        placeholder="Type your feedback here..." 
+                        placeholder={t("feedback.placeholder")} 
                         className='w-full md:w-[700px] text-xl p-3 border border-gray-200 focus:border-blue-600 rounded-3xl bg-transparent' 
                     ></textarea>
                     
@@ -117,9 +114,9 @@ export default function AddFeedBack({ opened, setOPened, id }: { opened: boolean
                             e.preventDefault()
                             await handleAddFeedBack()
                         }} 
-                        className='w-full md:w-[700px] text-2xl p-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-800 transition-colors'
+                        className='w-full md:w-[700px] text-2xl p-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-800 transition-colors cursor-pointer'
                     > 
-                        submit feedback 
+                        {t("feedback.submit")} 
                     </button>
                 </div>
             </DrawerContent>

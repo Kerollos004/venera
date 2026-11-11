@@ -216,5 +216,11 @@
 },
 "banners": {
     "freeExperince": "Enjoy your experience as a Venera Pro user free for 3 months!"
+},
+"feedback": {
+    "title": "Add Feedback",
+    "placeholder": "Type your feedback here...",
+    "submit": "Submit Feedback"
+
 }
 }

@@ -27,7 +27,7 @@ export default function RegisterLayout() {
         setAuthed(true)
         setLoading(false)
         setForm("login")
-    }
+        }
 
     useEffect(() => { 
         checkAuth()
