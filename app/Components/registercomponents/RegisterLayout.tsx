@@ -27,7 +27,6 @@ export default function RegisterLayout() {
         setAuthed(true)
         setLoading(false)
         setForm("login")
-        router.push("/") // تحويل تلقائي لو هو مسجل دخول مش محتاج يفتح صفحة التسجيل
     }
 
     useEffect(() => { 
