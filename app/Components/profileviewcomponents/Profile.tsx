@@ -1,4 +1,3 @@
-
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import React, { useEffect, useState } from 'react'
@@ -8,7 +7,7 @@ import { ProfileType } from '../assets/assets'
 import Certificate from './Certificate'
 import Achievments from './Achievment'
 import ProfilePost from './ProfilePost'
-import { Whatsapp, Envelope  , GeoAltFill} from 'react-bootstrap-icons'
+import { Whatsapp, Envelope, GeoAltFill } from 'react-bootstrap-icons'
 import Link from 'next/link'
 import subImg from "../../../public/images/doc-removebg-preview.png"
 import "../../reacti18"
@@ -17,6 +16,7 @@ import { supabase } from '../assets/supabase-client'
 import { useRouter } from 'next/navigation'
 import AddFeedBack from './AddFeedBack'
 import Feedback from './FeedBack'
+
 export default function Profile({ profile }: { profile: ProfileType }) {
     const { mode } = useThemeContext()
     const { t } = useTranslation()
@@ -27,58 +27,41 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     const [loading, setLoading] = useState<boolean>(true)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [profileOwnerId, setProfileOwnerId] = useState<string | null>(null)
-    const [openFeedBack , setOpenedFeedBack] = useState<boolean>(false)
+    const [openFeedBack, setOpenedFeedBack] = useState<boolean>(false)
 
+    // دمج فحص المصادقة ومعرفة المالك في دالة واحدة لتجنب إعادة التوجيه الخاطئة
+    useEffect(() => {
+        const verifyUser = async () => {
+            setLoading(true)
+            const { data: { session }, error } = await supabase.auth.getSession()
 
+            if (error || !session || !session.user) {
+                console.log("No active session found", error?.message)
+                setIsAuthenticated(false)
+                setProfileOwnerId(null)
+                setActiveAlert(true)
+                setLoading(false)
+                router.push("/")
+                return
+            }
 
-
-const checkAuth = async () => {
-        setLoading(true)
-        const { data: { session }, error } = await supabase.auth.getSession()
-
-        if (error || !session || !session.user) {
-            console.log("No active session found", error?.message)
-            setIsAuthenticated(false)
-            setLoading(false)
-            setActiveAlert(true)
-            router.push("/")
-        } else {
             setIsAuthenticated(true)
-            setLoading(false)
+            setProfileOwnerId(session.user.id)
             setActiveAlert(false)
+            setLoading(false)
         }
-    }
 
+        verifyUser()
+    }, [router])
+
+    // التحقق هل المستخدم الحالي هو مالك البروفايل أم لا
     useEffect(() => {
-        checkAuth()
-    }, [])
-
-const checkOwner = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-
-    if (session?.user) {
-        setProfileOwnerId(session.user.id) 
-    } else {
-        setProfileOwnerId(null)
-    }
-    }
-    useEffect(() => {
-        if (profile?.id !== profileOwnerId) {
+        if (profile?.id && profileOwnerId) {
+            setIsOwner(profile.id === profileOwnerId)
+        } else {
             setIsOwner(false)
         }
-        else {
-            setIsOwner(true)
-        }
     }, [profile?.id, profileOwnerId])
-    
-
-
-    useEffect(() => {
-        checkOwner()
-    } , [])
-
-
-
 
     if (loading) {
         return (
@@ -105,27 +88,11 @@ const checkOwner = async () => {
                         <div className='h-4 bg-gray-500/20 rounded-lg w-full mb-2' />
                         <div className='h-4 bg-gray-500/20 rounded-lg w-3/4' />
                     </div>
-
-                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} border-b-8 border-blue-600/40`}>
-                        <div className='h-7 bg-gray-500/30 rounded-lg w-40 mb-4' />
-                        <div className='h-16 bg-gray-500/20 rounded-xl w-full' />
-                    </div>
-
-                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} border-b-8 border-blue-600/40`}>
-                        <div className='h-7 bg-gray-500/30 rounded-lg w-44 mb-4' />
-                        <div className='h-16 bg-gray-500/20 rounded-xl w-full' />
-                    </div>
-                </section>
-
-                <section className={`p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} border-b-8 border-blue-600/40 animate-pulse`}>
-                    <div className='h-7 bg-gray-500/30 rounded-lg w-36 mb-6' />
-                    <div className='h-32 bg-gray-500/20 rounded-2xl w-full' />
                 </section>
             </main>
         )
     }
 
-    // 2. حظر العرض لو مفيش سجل دخول أو مفيش بروفايل
     if (!isAuthenticated || !profile) {
         return (
             <main className={`w-full min-h-screen flex flex-col items-center justify-center px-3.5 md:pt-20 py-10 ${mode === "light" ? "bg-gray-100 text-black" : "bg-[#0f172a] text-white"}`}>
@@ -142,34 +109,32 @@ const checkOwner = async () => {
     }
 
     return (
-        <main className={`w-full min-h-screen bg-fixed md:pt-20 py-10 px-3.5 md:px-10`}>
+        <main className={`w-full min-h-screen bg-fixed md:pt-20 py-10 px-3.5 md:px-10 ${mode === "light" ? "bg-gray-100 text-black" : "bg-[#0f172a] text-white"}`}>
             <section className='flex flex-col md:flex-row items-center gap-2.5 justify-between mb-4'>
-
                 <article className='flex flex-col gap-2.5'>
-                <article className='flex flex-col md:flex-row items-center gap-2.5'>
-                    <Image
-                        src={profile.doctorImage ? profile.doctorImage : subImg}
-                        alt='img'
-                        width={130}
-                        height={130}
-                        className='rounded-full w-32 h-32 border-2 border-blue-500 object-cover'
-                        loading='lazy'
-                    />
-                    <article className='text-center md:text-left'>
-                        <h3 className='text-4xl text-blue-500 mb-1 font-bold'>{profile.doctorName}</h3>
-                        {profile.doctorTitle ? <p>{profile.doctorTitle}</p> : ""}
+                    <article className='flex flex-col md:flex-row items-center gap-2.5'>
+                        <Image
+                            src={profile.doctorImage ? profile.doctorImage : subImg}
+                            alt='img'
+                            width={130}
+                            height={130}
+                            className='rounded-full w-32 h-32 border-2 border-blue-500 object-cover'
+                            loading='lazy'
+                        />
+                        <article className='text-center md:text-left'>
+                            <h3 className='text-4xl text-blue-500 mb-1 font-bold'>{profile.doctorName}</h3>
+                            {profile.doctorTitle ? <p>{profile.doctorTitle}</p> : ""}
+                        </article>
                     </article>
-                    </article>
-                    <article className={``}>
-                        <Link className={` p-3 px-8 rounded-3xl ${!isOwner ? "hidden" : "inline-block"} border w-fit border-blue-600 hover:bg-blue-800  font-semibold `} href={`/doctor_dashboard/${profile?.id}`}> 
+                    <article>
+                        <Link className={`p-3 px-8 rounded-3xl ${!isOwner ? "hidden" : "inline-block"} border w-fit border-blue-600 hover:bg-blue-800 font-semibold`} href={`/doctor_dashboard/${profile?.id}`}> 
                             {t("profile.view")} 
                         </Link>
                     </article>
                 </article>
-                
 
                 <article className={`${profile?.currentPlan === "free" ? "hidden" : "flex"} items-center gap-2`}>
-                    <a href={`https://wa.me/${profile?.doctorPhoneNumber}`} target="_blank" rel="noopener noreferrer" className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 transition`}> 
+                    <a href={`https://wa.me/${profile?.doctorPhoneNumber}`} target="_blank" rel="noopener noreferrer" className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 hover:text-white transition`}> 
                         <Whatsapp /> 
                     </a> 
                     
@@ -177,7 +142,7 @@ const checkOwner = async () => {
                         href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile?.doctorEmail}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 transition`}
+                        className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 hover:text-white transition`}
                     > 
                         <Envelope /> 
                     </a>
@@ -186,11 +151,10 @@ const checkOwner = async () => {
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile?.doctorAddress || '')}`}
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 transition`}
+                        className={`p-3.5 rounded-full border text-[19px] border-blue-600 hover:bg-blue-600 hover:text-white transition`}
                     >
                         <GeoAltFill/>
                     </a>
-
                 </article>
             </section>
 
@@ -198,7 +162,7 @@ const checkOwner = async () => {
                 <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
                     <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.about")}</h3>
                     {profile?.doctorBio ? <p className='leading-relaxed'>{profile?.doctorBio}</p> : ""}
-            </article>
+                </article>
 
                 <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
                     <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.certificates")}</h3>
@@ -225,19 +189,19 @@ const checkOwner = async () => {
                     ) : (
                         <h3 className='text-xl text-center text-blue-600 capitalize'>{t("profile.noFeedbacks")}</h3>
                     )}
-                    <div className="flex mt-2  justify-center ">
+                    <div className="flex mt-2 justify-center">
                         <button
-                            onClick={(e:React.MouseEvent) => {
+                            onClick={(e: React.MouseEvent) => {
                                 e.preventDefault()
                                 setOpenedFeedBack(true)
                             }}
-                            className={`p-3  ${isAuthenticated?"inline-block" :"hidden "} rounded-3xl bg-blue-600 hover:bg-blue-800`}> add feedback </button>
+                            className={`p-3 ${isAuthenticated ? "inline-block" : "hidden"} rounded-3xl bg-blue-600 text-white hover:bg-blue-800 transition cursor-pointer`}> 
+                            {t("feedback.title")}
+                        </button>
                     </div>
                     <AddFeedBack id={profile?.id} opened={openFeedBack} setOPened={setOpenedFeedBack} />
                 </article>
             </section>
-
-            
 
             <section className={`mt-3.5 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} p-3 md:px-20 lg:px-40 rounded-2xl border-b-8 border-blue-600`}>
                 <h3 className="text-3xl font-bold text-blue-600 mb-4">{t("profile.posts")}</h3>
@@ -248,8 +212,8 @@ const checkOwner = async () => {
                 )}
             </section>
 
-            <article className={`fixed  ${ activeAlert ? "block" : "hidden" }  ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b] "} left-1/2 top-1/2 rounded-3xl z-50 -translate-x-1/2 -translate-y-1/2 p-4 text-xl  text-red-600 shadow-lg`}> 
-                <h3>{t("profile.alert")} </h3>
+            <article className={`fixed ${activeAlert ? "block" : "hidden"} ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} left-1/2 top-1/2 rounded-3xl z-50 -translate-x-1/2 -translate-y-1/2 p-4 text-xl text-red-600 shadow-lg`}> 
+                <h3>{t("profile.alert")}</h3>
             </article>
         </main>
     )
