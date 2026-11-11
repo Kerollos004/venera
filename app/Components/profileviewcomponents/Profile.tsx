@@ -29,7 +29,6 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     const [profileOwnerId, setProfileOwnerId] = useState<string | null>(null)
     const [openFeedBack, setOpenedFeedBack] = useState<boolean>(false)
 
-    // دمج فحص المصادقة ومعرفة المالك في دالة واحدة لتجنب إعادة التوجيه الخاطئة
     useEffect(() => {
         const verifyUser = async () => {
             setLoading(true)
@@ -54,7 +53,6 @@ export default function Profile({ profile }: { profile: ProfileType }) {
         verifyUser()
     }, [router])
 
-    // التحقق هل المستخدم الحالي هو مالك البروفايل أم لا
     useEffect(() => {
         if (profile?.id && profileOwnerId) {
             setIsOwner(profile.id === profileOwnerId)
@@ -66,7 +64,6 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     if (loading) {
         return (
             <main className={`w-full min-h-screen md:pt-20 py-10 px-3.5 md:px-10 ${mode === "light" ? "bg-gray-100" : "bg-[#0f172a]"}`}>
-                {/* Header Skeleton */}
                 <section className='flex flex-col md:flex-row items-center gap-4 justify-between mb-8 animate-pulse'>
                     <div className='flex flex-col md:flex-row items-center gap-4'>
                         <div className='w-24 h-24 rounded-full bg-gray-500/30 border-2 border-blue-500/40 shrink-0' />
@@ -74,19 +71,6 @@ export default function Profile({ profile }: { profile: ProfileType }) {
                             <div className='h-8 bg-gray-500/30 rounded-xl w-48' />
                             <div className='h-4 bg-gray-500/20 rounded-lg w-32' />
                         </div>
-                    </div>
-                    <div className='flex items-center gap-3'>
-                        <div className='w-12 h-12 rounded-full bg-gray-500/30' />
-                        <div className='w-12 h-12 rounded-full bg-gray-500/30' />
-                    </div>
-                </section>
-
-                {/* Grid Sections Skeleton */}
-                <section className='grid grid-cols-1 md:grid-cols-4 gap-4 items-start mb-6 animate-pulse'>
-                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} border-b-8 border-blue-600/40`}>
-                        <div className='h-7 bg-gray-500/30 rounded-lg w-32 mb-4' />
-                        <div className='h-4 bg-gray-500/20 rounded-lg w-full mb-2' />
-                        <div className='h-4 bg-gray-500/20 rounded-lg w-3/4' />
                     </div>
                 </section>
             </main>
@@ -98,7 +82,7 @@ export default function Profile({ profile }: { profile: ProfileType }) {
             <main className={`w-full min-h-screen flex flex-col items-center justify-center px-3.5 md:pt-20 py-10 ${mode === "light" ? "bg-gray-100 text-black" : "bg-[#0f172a] text-white"}`}>
                 <div className={`p-8 rounded-3xl text-center max-w-md shadow-xl ${mode === "light" ? "bg-white" : "bg-[#1e293b]"}`}>
                     <h3 className='text-2xl font-bold text-red-500 mb-3'>
-                        {t("profile.alert") || "Please login or sign up to view this profile"}
+                        {t("profile.alert")}
                     </h3>
                     <Link href="/login" className='inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition'>
                         {t("navbar.login")}
