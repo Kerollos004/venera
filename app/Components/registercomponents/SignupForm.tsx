@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useState } from 'react'
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons'
@@ -12,27 +11,59 @@ import { useRouter } from 'next/navigation'
 export default function SignUpForm() {
     const { mode } = useThemeContext()
     const { setForm } = useFormContext()
-    const [showPassword, setShowPassword] = useState <boolean> (false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const { t } = useTranslation()
-    const [activeAlert , setActiveAlert] = useState <boolean> (false)
+    const [activeAlert, setActiveAlert] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [imageFile, setImageFile] = useState<File | null>(null) // حفظ ملف الصورة مؤقتاً لحد التسجيل
+
     const [user, setUser] = useState<signupType>({
-    doctorName: "",
-    doctorPhoneNumber: "",
-    doctorEmail: "",
-    doctorImage: "",
-    password: "",
-    doctorType: "",
-    doctorBio: "",
+        doctorName: "",
+        doctorPhoneNumber: "",
+        doctorEmail: "",
+        doctorImage: "",
+        password: "",
+        doctorType: "visitor",
+        doctorBio: "",
         doctorTitle: "",
         id: "",
-    doctorAddress:""
+        doctorAddress: ""
     })
     const router = useRouter()
+
+    // دالة رفع الصورة للـ Storage
+    const uploadProfileImage = async (file: File, userId: string) => {
+        const fileExt = file.name.split('.').pop()
+        const fileName = `profiles/${userId}_${Date.now()}.${fileExt}`
+
+        const { error: uploadError } = await supabase.storage
+            .from('images')
+            .upload(fileName, file)
+
+        if (uploadError) {
+            console.error("Error uploading profile image:", uploadError.message)
+            return ""
+        }
+
+        const { data } = supabase.storage
+            .from('images')
+            .getPublicUrl(fileName)
+
+        return data.publicUrl
+    }
 
     const handleCreate = async (e: React.MouseEvent) => {
         e.preventDefault()
 
-        if (user.doctorName && user.doctorEmail && user.password && user.doctorPhoneNumber) {
+        if (!user.doctorName || !user.doctorEmail || !user.password || !user.doctorPhoneNumber) {
+            setActiveAlert(true)
+            setTimeout(() => setActiveAlert(false), 3000)
+            return
+        }
+
+        setLoading(true)
+
+        // 1. إنشاء الحساب في Supabase Auth
         const { data: authData, error: authError } = await supabase.auth.signUp({
             email: user.doctorEmail,
             password: user.password,
@@ -40,79 +71,72 @@ export default function SignUpForm() {
 
         if (authError) {
             console.error("Error in auth signup:", authError.message)
-            return;
+            setLoading(false)
+            return
         }
 
-        const userId = authData.user?.id;
+        const userId = authData.user?.id
 
         if (userId) {
-            
+            let finalImageUrl = ""
+
+            // 2. لو اليوزر اختار صورة، ارفعها دلوقتي بعد ما بقى عنده ID وصلاحية
+            if (imageFile) {
+                finalImageUrl = await uploadProfileImage(imageFile, userId)
+            }
+
+            // 3. إدخال البيانات في جدول users
             const { error: dbError } = await supabase
-                .from('users') 
+                .from('users')
                 .insert({
                     id: userId,
-                    doctorTitle:user?.doctorTitle,
-                    doctorName: user?.doctorName,
-                    doctorImage: user?.doctorImage,
-                    doctorType: user?.doctorType || "visitor" ,
-                    doctorBio: user?.doctorBio,
-                    doctorEmail:user?.doctorEmail,
-                    doctorPhoneNumber: user?.doctorPhoneNumber,
-                    doctorAddress:user?.doctorAddress
-                });
+                    doctorTitle: user.doctorTitle,
+                    doctorName: user.doctorName,
+                    doctorImage: finalImageUrl,
+                    doctorType: user.doctorType || "visitor",
+                    doctorBio: user.doctorBio,
+                    doctorEmail: user.doctorEmail,
+                    doctorPhoneNumber: user.doctorPhoneNumber,
+                    doctorAddress: user.doctorAddress
+                })
+
             if (dbError) {
-                console.error("Error inserting into users table:", dbError.message);
+                console.error("Error inserting into users table:", dbError.message)
+                setLoading(false)
+                return
             }
-        }
+
+            setLoading(false)
+            router.push("/")
         } else {
-            setActiveAlert(true)
-            setTimeout(() => {
-                setActiveAlert(false)
-            } , 3000)
+            setLoading(false)
         }
-
-        setUser({
-    doctorName: "",
-    doctorPhoneNumber: "",
-    doctorEmail: "",
-    doctorImage: "",
-    password: "",
-    doctorType: "",
-    doctorBio: "",
-    id: "",
-            doctorTitle: "",
-    doctorAddress:""
-        })
-        router.push("/")
-        
     }
-
-
 
     const inputStyle = `p-2.5 focus:border-blue-600 outline-none mb-1 border rounded-xl transition-all ${
         mode === "light" ? "bg-white border-gray-300" : "bg-gray-800 border-gray-600 text-white"
-    }`;
+    }`
 
     return (
         <article className={`p-6 rounded-2xl shadow-xl transition-all ${
             mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"
         } w-11/12 md:w-175 border-t-4 border-blue-600`}>
-            
+
             <h3 className='text-3xl font-black text-blue-600 mb-6 text-center uppercase tracking-tight'>
                 {t("register.signUp.title")}
             </h3>
 
-            <form  className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                
+            <form className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold' htmlFor="name"> {t("register.signUp.name")} </label>
-                    <input 
+                    <input
                         name="name"
-                        value={user.doctorName} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorName:e.target.value})}}
-                        className={inputStyle} 
-                        type="text" 
-                        placeholder='Dr. Ahmed Ali' 
+                        value={user.doctorName}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUser({ ...user, doctorName: e.target.value })}
+                        className={inputStyle}
+                        type="text"
+                        placeholder='Dr. Ahmed Ali'
                         required
                     />
                 </div>
@@ -120,13 +144,13 @@ export default function SignUpForm() {
                 {/* Phone Number */}
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold' htmlFor="phoneNumber">{t("register.signUp.number")}</label>
-                    <input 
+                    <input
                         name="phoneNumber"
-                        value={user.doctorPhoneNumber} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorPhoneNumber:e.target.value})}}
-                        className={inputStyle} 
-                        type="tel" 
-                        placeholder='010xxxxxxx' 
+                        value={user.doctorPhoneNumber}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUser({ ...user, doctorPhoneNumber: e.target.value })}
+                        className={inputStyle}
+                        type="tel"
+                        placeholder='010xxxxxxx'
                         required
                     />
                 </div>
@@ -134,13 +158,13 @@ export default function SignUpForm() {
                 {/* Email */}
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold' htmlFor="email">{t("register.signUp.email")} </label>
-                    <input 
+                    <input
                         name="email"
-                        value={user.doctorEmail} 
-                        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , doctorEmail:e.target.value})}}
-                        className={inputStyle} 
-                        type="email" 
-                        placeholder='name@venera.com' 
+                        value={user.doctorEmail}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUser({ ...user, doctorEmail: e.target.value })}
+                        className={inputStyle}
+                        type="email"
+                        placeholder='name@venera.com'
                         required
                     />
                 </div>
@@ -149,20 +173,20 @@ export default function SignUpForm() {
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold' htmlFor="password">{t("register.signUp.password")}</label>
                     <div className="relative w-full">
-                        <input 
+                        <input
                             name="password"
-                            value={user.password} 
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{setUser({...user , password:e.target.value})}}
-                            className={`${inputStyle} w-full pr-10`} 
-                            type={showPassword ? "text" : "password"} 
-                            placeholder='••••••••' 
+                            value={user.password}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUser({ ...user, password: e.target.value })}
+                            className={`${inputStyle} w-full pr-10`}
+                            type={showPassword ? "text" : "password"}
+                            placeholder='••••••••'
                             required
                         />
-                        <div 
+                        <div
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-3 cursor-pointer text-blue-600 hover:text-blue-700"
                         >
-                            {showPassword ? <EyeSlashFill size={18}/> : <EyeFill size={18}/>}
+                            {showPassword ? <EyeSlashFill size={18} /> : <EyeFill size={18} />}
                         </div>
                     </div>
                 </div>
@@ -170,15 +194,13 @@ export default function SignUpForm() {
                 {/* Role Selection */}
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold'>{t("register.signUp.i-am.iam")}</label>
-                    <select 
-                        defaultValue="visitor"
+                    <select
+                        value={user.doctorType}
                         name="role"
-                        onChange={(e:React.ChangeEvent<HTMLSelectElement>) => {
-                            setUser({...user , doctorType:e.target.value})
-                        }}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setUser({ ...user, doctorType: e.target.value })}
                         className={inputStyle}
                     >
-                        <option  disabled>{t("register.signUp.i-am.choose") }</option>
+                        <option disabled>{t("register.signUp.i-am.choose")}</option>
                         <option value="visitor">{t("register.signUp.i-am.patient")}</option>
                         <option value="dentist">{t("register.signUp.i-am.doctor")}</option>
                     </select>
@@ -187,81 +209,74 @@ export default function SignUpForm() {
                 {/* Image Upload */}
                 <div className="flex flex-col gap-1">
                     <label className='text-sm font-semibold'>{t("register.signUp.pic")}</label>
-                    <input 
-                        className={`${inputStyle} file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`} 
-                        type="file" 
+                    <input
+                        className={`${inputStyle} file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`}
+                        type="file"
                         accept="image/*"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            const file = e.target.files?.[0];
+                            const file = e.target.files?.[0]
                             if (file) {
-                                const reader = new FileReader();
-                                reader.onload = () => {
-                                    setUser({ ...user, doctorImage: reader.result as string });
-                                };
-                                reader.readAsDataURL(file); // السطر ده كان ناقص في كودك!
+                                setImageFile(file) // حفظ الملف فقط دون تحويله لـ Base64
                             }
                         }}
                     />
                 </div>
 
                 {/* address */}
-                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                <div className={`${user.doctorType === "dentist" ? "flex" : "hidden"} flex-col gap-1 col-span-1 md:col-span-2`}>
                     <label className='text-sm font-semibold'>{t("register.signUp.address")}</label>
                     <input
-                        placeholder=' bachelor of dentistry'
+                        placeholder='Clinic address...'
                         value={user.doctorAddress}
-                        className={`${inputStyle} `} 
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setUser({...user , doctorAddress:e.target.value})
-                        }}
+                        className={inputStyle}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUser({ ...user, doctorAddress: e.target.value })}
                     />
                 </div>
 
                 {/* title */}
-                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                <div className={`${user.doctorType === "dentist" ? "flex" : "hidden"} flex-col gap-1 col-span-1 md:col-span-2`}>
                     <label className='text-sm font-semibold'>{t("register.signUp.jobTitle")}</label>
-                    <textarea 
-                        placeholder=' bachelor of dentistry'
+                    <textarea
+                        placeholder='Bachelor of dentistry...'
                         value={user.doctorTitle}
-                        className={`${inputStyle} `} 
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setUser({...user , doctorTitle:e.target.value})
-                        }}
+                        className={inputStyle}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUser({ ...user, doctorTitle: e.target.value })}
                     />
                 </div>
 
                 {/* bio */}
-                <div className={`  ${user.doctorType==="dentist"?"flex":"hidden"} flex-col gap-1 col-span-1   md:col-span-2 `}>
+                <div className={`${user.doctorType === "dentist" ? "flex" : "hidden"} flex-col gap-1 col-span-1 md:col-span-2`}>
                     <label className='text-sm font-semibold'>{t("register.signUp.bio")}</label>
-                    <textarea 
-                        placeholder='i am a dentist...'
+                    <textarea
+                        placeholder='I am a dentist...'
                         value={user.doctorBio}
-                        className={`${inputStyle} `} 
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setUser({...user , doctorBio:e.target.value})
-                        }}
+                        className={inputStyle}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUser({ ...user, doctorBio: e.target.value })}
                     />
                 </div>
 
-                <button   
-                    onClick={handleCreate} 
-                    type="button" 
-                    className="md:col-span-2 col-span-1 mt-4 bg-blue-600 hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg cursor-pointer"
+                <button
+                    onClick={handleCreate}
+                    disabled={loading}
+                    type="button"
+                    className={`md:col-span-2 col-span-1 mt-4 bg-blue-600 hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                    {t("register.signUp.loginBtn")}
+                    {loading ? "..." : t("register.signUp.loginBtn")}
                 </button>
             </form>
 
-            <div className="flex mt-6 justify-center  flex-col md:flex-row items-center gap-2 text-sm opacity-80">
+            <div className="flex mt-6 justify-center flex-col md:flex-row items-center gap-2 text-sm opacity-80">
                 <p>{t("register.signUp.already")}</p>
-                <button 
-                    onClick={() => setForm("login")} 
+                <button
+                    onClick={() => setForm("login")}
                     className='text-blue-600 font-bold hover:underline cursor-pointer'
-                > 
-                    {t("register.signUp.login")} 
+                >
+                    {t("register.signUp.login")}
                 </button>
             </div>
-            <article className={`fixed ${ activeAlert?"top-0" :"-top-full" } left-1/2   w-11/12 md:w-150 text-center  rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl  text-red-600 ${mode==="light" ? "bg-gray-300" :"bg-[#1e293b]" } `}> {t("register.alert")} </article>
+            <article className={`fixed ${activeAlert ? "top-0" : "-top-full"} left-1/2 w-11/12 md:w-150 text-center rounded-3xl z-50 -translate-x-1/2 p-4 text-2xl text-red-600 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"}`}>
+                {t("register.alert")}
+            </article>
         </article>
     )
 }
