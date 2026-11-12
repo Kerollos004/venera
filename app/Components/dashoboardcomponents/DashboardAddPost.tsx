@@ -44,7 +44,7 @@ export default function DashboardAddPost() {
 const handleAddPost = async (e: React.MouseEvent) => {
     e.preventDefault()
     if (newPost?.name !== "" || newPost?.type !=="") {
-        const { error } = await supabase.from("posts").insert(newPost)
+        const { error } = await supabase.from("posts").insert([newPost])
         
         if (error) {
             console.log("error on adding post", error.message)
