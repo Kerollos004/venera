@@ -11,18 +11,17 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const POSTS_PER_PAGE:number = 10;
-    const {t} = useTranslation()
+    const POSTS_PER_PAGE: number = 10;
+    const { t } = useTranslation();
 
-    // دالة جلب الـ 10 بوستات التانية أوتوماتيك
     const fetchMorePosts = async () => {
         if (loading || !hasMore) return;
         setLoading(true);
 
+        // حساب الـ range بناءً على الصفحة الحالية بدقة
         const startIndex = page * POSTS_PER_PAGE;
         const endIndex = startIndex + POSTS_PER_PAGE - 1;
 
-        // 1. هات الـ 10 بوستات اللي عليهم الدور
         const { data: newPosts, error } = await supabase
             .from("posts")
             .select("*")
@@ -35,7 +34,7 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
             return;
         }
 
-        // 2. هات أصحاب البوستات دي بس
+        // جلب أصحاب البوستات الجديدة
         const userIds = [...new Set(newPosts.map(p => p.user_id))];
         const { data: newUsers } = await supabase
             .from("users")
@@ -44,7 +43,7 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
 
         const usersList = newUsers || [];
 
-        // 3. اربط كل بوست بصاحبه
+        // دمج البوستات الجديدة بأصحابها
         const combinedNewPosts = newPosts.map((post) => {
             const matchedUser = usersList.find((user) => user.id === post.user_id);
             return {
@@ -53,7 +52,6 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
             };
         });
 
-        // 4. ضيف البوستات الجديدة للقائمة القديمة
         setPosts((prev) => [...prev, ...combinedNewPosts]);
         setPage((prev) => prev + 1);
         setLoading(false);
@@ -63,7 +61,7 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
         }
     };
 
-    // مراقبة النزول لآخر الصفحة أوتوماتيك
+    // مراقبة النزول لآخر الصفحة لتفعيل الـ Infinite Scroll
     useEffect(() => {
         const handleScroll = () => {
             if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 250) {
@@ -77,7 +75,6 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
 
     return (
         <>
-            {/* عرض البوستات */}
             {posts.map((post) => (
                 <Post 
                     key={post.id} 
@@ -86,7 +83,6 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
                 />
             ))}
 
-            {/* اللودر الفخم الجديد الشيك */}
             {loading && (
                 <div className="flex flex-col items-center justify-center py-6 gap-3">
                     <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -96,7 +92,6 @@ export default function CommunityFeedList({ initialPosts }: { initialPosts: any[
                 </div>
             )}
 
-            {/* رسالة النهاية لو خلصت البوستات */}
             {!hasMore && (
                 <div className="text-center py-6 text-slate-500 text-sm font-medium">
                     {t('community.endPosts')}
