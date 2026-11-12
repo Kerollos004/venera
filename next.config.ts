@@ -9,7 +9,16 @@ const withPWA = nextPWA({
 });
 
 const nextConfig: NextConfig = {
-  /* إعداداتك هنا */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'jasrphiflwwvwnmkzrhp.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
 };
 
 // بنستخدم as any عشان نكسر التعارض بين نسخ الـ NextConfig المؤقتة
