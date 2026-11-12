@@ -114,7 +114,7 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
     ) : ""}
 
     {certificate?.image ? (
-        <div className="relative w-full h-[300px] rounded-xl overflow-hidden mt-2">
+        <div className="relative w-full h-[400px] rounded-xl overflow-hidden mt-2">
             <Image
                 onDoubleClick={handleDoubleReact}
                 src={certificate.image}

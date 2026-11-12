@@ -116,7 +116,7 @@ export default function SingleAchievement({ achievement }: { achievement: postTy
     ) : ""}
 
     {achievement?.image ? (
-        <div className="relative w-full h-[300px] rounded-xl overflow-hidden mt-2">
+        <div className="relative w-full h-[400px] rounded-xl overflow-hidden mt-2">
             <Image
                 onDoubleClick={handleDoubleReact}
                 src={achievement.image}

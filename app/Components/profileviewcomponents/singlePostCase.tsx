@@ -150,7 +150,7 @@ const checkUserLikeStatus = async () => {
                 width={400}
                 height={400}
                 draggable={false}
-                className='w-full h-82  '
+                className='w-full h-100  '
                 loading='lazy'
             />
             <div className={`absolute bottom-4 left-4 flex py-2 px-4 ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} rounded-3xl gap-2.5 shadow-md z-10`}>
