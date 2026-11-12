@@ -41,7 +41,7 @@
 
         useEffect(() => {
             checkUserLikeStatus()
-        }, [])
+        }, [post?.post_likers])
 
         const handleDisplayPostComments = async () => {
         const { data, error } = await supabase
