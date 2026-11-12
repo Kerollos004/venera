@@ -26,7 +26,7 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
             
             const { error: uploadError } = await supabase.storage
                 .from('images') 
-                .upload(fileName, file, { upsert: true }) // upsert عشان لو نفس الاسم يستبدلها
+                .upload(fileName, file, { upsert: true })
 
             if (uploadError) {
                 console.error("Error uploading image:", uploadError.message)
@@ -44,8 +44,16 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
         }
     }
 
-    const handleUpdateProfile = async (e: React.MouseEvent) => {
+    const handleUpdateProfile = async (e: React.FormEvent | React.MouseEvent) => {
         e.preventDefault()
+        
+        // التحقق من الـ Session قبل التحديث لضمان عدم حدوث خطأ على Vercel
+        const { data: { session }, error: sessionErr } = await supabase.auth.getSession()
+        if (sessionErr || !session) {
+            console.log("No active session found on Vercel:", sessionErr?.message)
+            return;
+        }
+
         const { error } = await supabase.from("users").update({
             doctorName: name, 
             doctorBio: bio,
@@ -64,7 +72,7 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
 
     return (
         <section className={`w-full fixed top-0 left-0 z-50 p-10 h-screen ${openUpdateProfile ? "flex" : "hidden"} justify-center items-center bg-white/10 backdrop-blur-md`}>
-            <form className={`w-11/12 md:w-[800px] p-6 rounded-3xl ${mode === "light" ? "bg-gray-300 text-black" : "text-white bg-[#1e293b]"}`}>
+            <form onSubmit={handleUpdateProfile} className={`w-11/12 md:w-[800px] p-6 rounded-3xl ${mode === "light" ? "bg-gray-300 text-black" : "text-white bg-[#1e293b]"}`}>
                 
                 {/* Image Upload */}
                 <div className="flex flex-col justify-center items-center gap-1">
@@ -83,7 +91,6 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
                             onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
-                                    // رفع الصورة مباشرة للـ Supabase Storage وتخزين الـ Public URL
                                     const publicUrl = await uploadImageToStorage(file);
                                     if (publicUrl) {
                                         setImage(publicUrl);
@@ -125,10 +132,10 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
                 </div>
 
                 <button 
-                    onClick={handleUpdateProfile} 
-                    className={`w-full p-3 cursor-pointer rounded-3xl bg-blue-600 hover:bg-blue-800 text-white font-semibold transition `}
+                    type="submit"
+                    className={`w-full p-3 cursor-pointer rounded-3xl bg-blue-600 hover:bg-blue-800 text-white font-semibold transition`}
                 > 
-                    (t{"dashboard.settings.update"})
+                    {t("dashboard.settings.update")}
                 </button>
             </form>
 
