@@ -122,7 +122,7 @@ export default function SingleAchievement({ achievement }: { achievement: postTy
                 src={achievement.image}
                 alt='img'
                 fill
-                className='object-cover'
+                
                 loading='lazy'
             /> 
 

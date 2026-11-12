@@ -138,7 +138,7 @@ export default function PostContent({ post }: { post: postType }) {
                         width={400}
                         height={400}
                         draggable={false}
-                        className='w-full h-82 object-cover rounded-xl'
+                        className='w-full h-82  rounded-xl'
                         loading='lazy'
                     />
                     

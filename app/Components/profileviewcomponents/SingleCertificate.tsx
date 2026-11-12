@@ -120,7 +120,7 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
                 src={certificate.image}
                 alt='img'
                 fill
-                className='object-cover'
+                className=''
                 loading='lazy'
             /> 
 
