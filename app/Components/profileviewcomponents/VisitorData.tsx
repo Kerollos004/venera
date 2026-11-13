@@ -3,7 +3,7 @@
 import React from 'react'
 import { feedBack, ProfileType } from '../assets/assets'
 import Image from 'next/image'
-import { ArrowRepeat , BoxArrowLeft, PinFill } from 'react-bootstrap-icons'
+import { ArrowRepeat , BoxArrowLeft, PenFill, PinFill } from 'react-bootstrap-icons'
 import subImg from "../../../public/images/doc-removebg-preview.png"
 import { useRouter } from 'next/navigation'
 import { supabase } from '../assets/supabase-client'
@@ -12,10 +12,12 @@ import { useEffect , useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import VisitorsFeedBacks from './VisitorsFeedBacks'
 import UpadateVisitorProfile from './VisitorUpdateProfile'
+import { UseUpdateVisitorProfileContext } from '../assets/contexts'
 export default function VisitorData({ visitor , feedBacks }: { visitor: ProfileType , feedBacks:feedBack[] }) {
     const { t, i18n } = useTranslation()
 const [user, setUser] = useState<ProfileType | null>(null)
     const router = useRouter()
+    const {setOpenVisitorProfile} = UseUpdateVisitorProfileContext()
     
 
 const getUser = async () => {
@@ -94,16 +96,16 @@ useEffect(() => {
                             e.preventDefault()
                             await handleLogout()
                     }}
-                        className='p-3 flex w-full justify-center items-center  gap-1 hover:bg-red-800 bg-blue-600 rounded-3xl'>
+                        className='p-3 flex w-full justify-center items-center  gap-1 hover:bg-blue-800 bg-blue-600 rounded-3xl'>
                         < BoxArrowLeft /> {t("dashboard.settings.logout")}
                     </button>
 
                     <button onClick={async (e:React.MouseEvent) => {
-                            e.preventDefault()
-                            await handleLogout()
+                        e.preventDefault()
+                        setOpenVisitorProfile(true)
                     }}
                         className='p-3 flex w-full justify-center items-center  gap-1 hover:bg-red-800 bg-blue-600 rounded-3xl'>
-                        < PinFill /> {t("dashboard.settings.update")}
+                        < PenFill /> {t("dashboard.settings.update")}
                     </button>
                 </article>
             </article>
