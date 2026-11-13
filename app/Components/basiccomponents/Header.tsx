@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Icon, MoonFill , BrightnessHighFill } from 'react-bootstrap-icons'
-import { useThemeContext } from '../assets/contexts'
+import { useOpenSearchDoctorsContext, useThemeContext } from '../assets/contexts'
 import { useTranslation } from 'react-i18next';
 import "../../reacti18"
 import logo from "../../../public/images/Gemini_Generated_Image_d2y7e3d2y7e3d2y7.png"
@@ -27,7 +27,7 @@ export default function Header() {
     const { t, i18n } = useTranslation();
     const [session, setSession] = useState<Session | null>(null)
     const [user, setUser] = useState<ProfileType|null>(null)
-    
+    const {setOpenSearchDoctors} = useOpenSearchDoctorsContext()
 
 
     const getSession = async () => {
@@ -256,7 +256,9 @@ const fetchUserData = async () => {
                     </div>
                 </li>
                 <li>
-                    <SearchIcon/>
+                    <button onClick={()=>{setOpenSearchDoctors(true)}}>
+                    <SearchIcon  />
+                    </button>
                 </li>
             </ul>
 

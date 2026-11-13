@@ -125,7 +125,7 @@ export const OpenCheckoutProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-//open update profile 
+//open update doctor profile 
 
 interface updateProfile {
     openUpdateProfile: boolean,
@@ -150,5 +150,61 @@ export const OpenUpdateProfileProvider = ({ children }: { children: ReactNode })
         <OpenUpdateProfileContext.Provider value={{ openUpdateProfile, setOpenUpdateProfile }}>
             {children}
         </OpenUpdateProfileContext.Provider>
+    );
+};
+
+// open update visitor profile
+
+interface updateVisitorProfile {
+    openVisitorProfile: boolean,
+    setOpenVisitorProfile: Dispatch <SetStateAction<boolean>>
+}
+
+
+const UpdateVisitorProfileContext = createContext<updateVisitorProfile | null>(null)
+
+export const UseUpdateVisitorProfileContext = () => {
+    const context = useContext(UpdateVisitorProfileContext)
+
+    if (!context) {
+        throw new Error('useTheme must be used within a updatesProvider');
+    }
+    return context
+}
+
+export const OpenUpdateVisitorProfileProvider = ({ children }: { children: ReactNode }) => {
+    const [openVisitorProfile, setOpenVisitorProfile] = useState<boolean>(false);
+    return (
+        <UpdateVisitorProfileContext.Provider value={{ openVisitorProfile, setOpenVisitorProfile }}>
+            {children}
+        </UpdateVisitorProfileContext.Provider>
+    );
+};
+
+//open search doctors
+
+interface OpenSearchDoctors {
+    openSearchDoctors: boolean,
+    setOpenSearchDoctors: Dispatch <SetStateAction<boolean>>
+}
+
+
+const OpenSearchDoctorsContext = createContext<OpenSearchDoctors | null>(null)
+
+export const useOpenSearchDoctorsContext = () => {
+    const context = useContext(OpenSearchDoctorsContext)
+
+    if (!context) {
+        throw new Error('useTheme must be used within a updatesProvider');
+    }
+    return context
+}
+
+export const OpenSearchDoctorsProvider = ({ children }: { children: ReactNode }) => {
+    const [openSearchDoctors, setOpenSearchDoctors] = useState<boolean>(false);
+    return (
+        <OpenSearchDoctorsContext.Provider value={{ openSearchDoctors, setOpenSearchDoctors }}>
+            {children}
+        </OpenSearchDoctorsContext.Provider>
     );
 };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Header from "./Components/basiccomponents/Header";
 import "./globals.css";
-import { ThemeProvider, FormProvider  , SelectedCommentsProvider  , OpenCheckoutProvider , OpenUpdateProfileProvider } from "./Components/assets/contexts"; 
+import { ThemeProvider, FormProvider  , SelectedCommentsProvider , OpenSearchDoctorsProvider , OpenUpdateVisitorProfileProvider , OpenCheckoutProvider , OpenUpdateProfileProvider } from "./Components/assets/contexts"; 
 import Footer from "./Components/basiccomponents/Footer";
 import MobMenu from "./Components/basiccomponents/MobMenu";
 // import Checkout from "./Components/checkoutcomponents/Checkout";
@@ -32,12 +32,16 @@ export default function RootLayout({
             <SelectedCommentsProvider>
               <OpenCheckoutProvider>
                 <OpenUpdateProfileProvider>
+                  <OpenSearchDoctorsProvider>
+                    <OpenUpdateVisitorProfileProvider>
                     <Header />
                     {children}
                     {/* <Checkout/> */}
                     <SearchContainer/>
                     <MobMenu/>
                     <Footer/>
+                    </OpenUpdateVisitorProfileProvider>
+                  </OpenSearchDoctorsProvider>
                 </OpenUpdateProfileProvider>
               </OpenCheckoutProvider>
             </SelectedCommentsProvider>
