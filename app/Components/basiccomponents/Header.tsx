@@ -14,6 +14,7 @@ import { supabase } from '../assets/supabase-client'
 import { Session } from '@supabase/supabase-js'
 import { ProfileType } from '../assets/assets'
 import subImg from "../../../public/images/doc-removebg-preview.png"
+import SearchIcon from './SearchIcon'
 
 
 export default function Header() {
@@ -253,6 +254,9 @@ const fetchUserData = async () => {
                         <div className={` ${mode==="light"?"bg-black":"bg-white"}  ${activeIcon?" w-full  top-1/2 -translate-y-1/2 opacity-0 ":" w-1/2 top-1/2 -translate-y-1/2 opacity-100"}  absolute  left-0    h-0.5   `} ></div>
                         <div className={` ${mode==="light"?"bg-black":"bg-white"}  ${activeIcon?" w-full top-1/2 -translate-y-1/2 -rotate-45 ":"  w-1/4 top-3/4 -translate-y-1/2"}  absolute  left-0    h-0.5   `} ></div>
                     </div>
+                </li>
+                <li>
+                    <SearchIcon/>
                 </li>
             </ul>
 

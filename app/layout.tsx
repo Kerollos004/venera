@@ -5,10 +5,11 @@ import { ThemeProvider, FormProvider  , SelectedCommentsProvider  , OpenCheckout
 import Footer from "./Components/basiccomponents/Footer";
 import MobMenu from "./Components/basiccomponents/MobMenu";
 // import Checkout from "./Components/checkoutcomponents/Checkout";
+import SearchContainer from "./Components/basiccomponents/SearchContainer";
 
 
 export const metadata: Metadata = {
-  title: "Venera",
+  title: "Veneraup",
   description: "Dental Community Platform",
   manifest: "/manifest.json",
   icons: {
@@ -34,6 +35,7 @@ export default function RootLayout({
                     <Header />
                     {children}
                     {/* <Checkout/> */}
+                    <SearchContainer/>
                     <MobMenu/>
                     <Footer/>
                 </OpenUpdateProfileProvider>
