@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from "next";
 import RegisterLayout from '../Components/registercomponents/RegisterLayout';
 export const metadata: Metadata = {
-    title: "login",
+    title: "veneraup",
     description: "venera saas app login page",
 };
 export default function Login() {
