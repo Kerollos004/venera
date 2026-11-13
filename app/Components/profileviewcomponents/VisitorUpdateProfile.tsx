@@ -82,7 +82,7 @@ export default function UpadateVisitorProfile({ profile }: { profile: ProfileTyp
                     />
                     <div className='w-full'>
                         <input 
-                            className={`w-full mb-2.5 p-2 rounded-2xl border border-gray-300 focus:border-blue-600 mt-1 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`} 
+                            className={`w-full mb-2.5 p-2 rounded-2xl border border-white focus:border-blue-600 mt-1 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`} 
                             type="file"  
                             accept="image/*"
                             onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,7 +102,7 @@ export default function UpadateVisitorProfile({ profile }: { profile: ProfileTyp
                     <label htmlFor="name"> {t("updateProfile.name")} </label>
                     <input 
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        className='w-full mb-2.5 p-2 rounded-2xl border border-gray-300 focus:border-blue-600 mt-1 outline-none' 
+                        className='w-full mb-2.5 p-2 rounded-2xl border border-white focus:border-blue-600 mt-1 outline-none' 
                         type="text" 
                         value={name} 
                     />
