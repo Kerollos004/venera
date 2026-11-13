@@ -14,7 +14,7 @@ export default function SearchContainer() {
 
 
     return (
-        <section className="fixed inset-0 z-90 flex flex-col items-center justify-start px-2.5 py-10 md:px-40 bg-black/60 backdrop-blur-sm animate-fadeIn">
+        <section className="hidden inset-0 z-90 flex flex-col items-center justify-start px-2.5 py-10 md:px-40 bg-black/60 backdrop-blur-sm animate-fadeIn">
             <input className='w-full p-3 text-white rounded-2xl border-2 mb-4 border-gray-200 focus:border-blue-600'
                 type="text"
                 value={searchQuery}
