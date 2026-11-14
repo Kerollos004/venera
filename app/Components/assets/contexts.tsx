@@ -208,3 +208,31 @@ export const OpenSearchDoctorsProvider = ({ children }: { children: ReactNode })
         </OpenSearchDoctorsContext.Provider>
     );
 };
+
+//open gallery
+
+interface OpenGallery {
+    openGallery: boolean,
+    setOpenGallery: Dispatch <SetStateAction<boolean>>
+}
+
+
+const OpenGalleryContext = createContext<OpenGallery | null>(null)
+
+export const useOpenGalleryContext = () => {
+    const context = useContext(OpenGalleryContext)
+
+    if (!context) {
+        throw new Error('useTheme must be used within a updatesProvider');
+    }
+    return context
+}
+
+export const OpenGalleryProvider = ({ children }: { children: ReactNode }) => {
+    const [openGallery, setOpenGallery] = useState<boolean>(false);
+    return (
+        <OpenGalleryContext.Provider value={{ openGallery, setOpenGallery }}>
+            {children}
+        </OpenGalleryContext.Provider>
+    );
+};

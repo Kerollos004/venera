@@ -1,27 +1,42 @@
 "use client"
 import React from 'react'
 import Image from 'next/image'
-import { useThemeContext } from '../assets/contexts'
+import { useOpenSearchDoctorsContext, useThemeContext } from '../assets/contexts'
 import { ProfileType } from '../assets/assets'
 import subimg from "../../../public/images/doc-removebg-preview.png"
 import Link from 'next/link';
-export default function SearchResult({profile}:{profile:ProfileType}) {
-    const {mode} = useThemeContext()
+
+export default function SearchResult({ profile }: { profile: ProfileType }) {
+    const { mode } = useThemeContext()
+    const { setOpenSearchDoctors } = useOpenSearchDoctorsContext()
+    
+    // تحديد الرابط بناءً على نوع المستخدم (طبيب أسنان أو زائر)
+    const profileLink = profile?.doctorType === "dentist" 
+        ? `/doctors/${profile?.id}` 
+        : `/visitors/${profile?.id}`;
+
     return (
-        <div className={`w-full mb-3 border-2 border-blue-500/50 ${mode === "light" ? "bg-white/75 text-slate-900 shadow-sm" : "bg-slate-900/75 text-white shadow-xl"} backdrop-blur-xl p-3 rounded-3xl flex items-center gap-2.5`}>            <Link href={`${profile?.doctorType === "dentist" ? `/doctors/${profile?.id}` : `/visitors/${profile?.id}`}`}>
+        <Link 
+            onClick={() => setOpenSearchDoctors(false)} 
+            href={profileLink}
+            className={`w-full mb-3 border-2 border-blue-500/50 ${
+                mode === "light" 
+                    ? "bg-white/75 text-slate-900 shadow-sm" 
+                    : "bg-slate-900/75 text-white shadow-xl"
+            } backdrop-blur-xl p-3 rounded-3xl flex items-center gap-2.5 transition hover:border-blue-600 block`}
+        >
             <Image
                 src={profile?.doctorImage ? profile?.doctorImage : subimg}
                 alt='img'
                 width={200}
                 height={200} 
                 loading='lazy'
-                className='w-15 h-15 rounded-full '
+                className='w-16 h-16 rounded-full object-cover flex-shrink-0'
             />
-            </Link>
-            <div className="">
-                <h3 className='text-xl mb-1' > {profile?.doctorName} </h3>
-                <p> {profile?.doctorTitle} </p>
+            <div className="overflow-hidden">
+                <h3 className='text-xl mb-1 truncate'>{profile?.doctorName}</h3>
+                <p className='text-sm opacity-80 truncate'>{profile?.doctorTitle}</p>
             </div>
-        </div>
+        </Link>
     )
 }

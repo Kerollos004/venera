@@ -2,7 +2,7 @@
 "use client"
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Icon, MoonFill , BrightnessHighFill } from 'react-bootstrap-icons'
+import { Icon, MoonFill , BrightnessHighFill, Search } from 'react-bootstrap-icons'
 import { useOpenSearchDoctorsContext, useThemeContext } from '../assets/contexts'
 import { useTranslation } from 'react-i18next';
 import "../../reacti18"
@@ -14,7 +14,7 @@ import { supabase } from '../assets/supabase-client'
 import { Session } from '@supabase/supabase-js'
 import { ProfileType } from '../assets/assets'
 import subImg from "../../../public/images/doc-removebg-preview.png"
-import SearchIcon from './SearchIcon'
+
 
 
 export default function Header() {
@@ -257,7 +257,7 @@ const fetchUserData = async () => {
                 </li>
                 <li>
                     <button onClick={()=>{setOpenSearchDoctors(true)}}>
-                    <SearchIcon  />
+                    <Search  />
                     </button>
                 </li>
             </ul>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import React, { useState } from 'react'
 import { useThemeContext, useUpdateProfileContext } from '../assets/contexts'
@@ -18,15 +19,37 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
     const [image, setImage] = useState<string>(profile?.doctorImage ? profile?.doctorImage : "")
     const { t } = useTranslation()
 
+    // دالة استخراج مسار الصورة القديمة لحذفها لو كانت برابط مختلف
+    const extractStoragePath = (url: string) => {
+        const marker = '/images/';
+        const index = url.indexOf(marker);
+        return index !== -1 ? decodeURIComponent(url.substring(index + marker.length)) : '';
+    }
+
     // دالة رفع الصورة للـ Supabase Storage وتوليد الرابط العام
     const uploadImageToStorage = async (file: File) => {
         try {
+            if (!profile?.id) return null;
+
             const fileExt = file.name.split('.').pop()
-            const fileName = `profiles/${profile?.id}_${Date.now()}.${fileExt}`
+            // تثبيت اسم الملف بناءً على الـ ID عشان الـ upsert يستبدل القديمة ويهلكها فوراً
+            const fileName = `profiles/${profile.id}.${fileExt}`
             
+            // 1. لو فيه صورة قديمة ومسارها مختلف، نمسحها أولاً كاحتياط
+            if (profile?.doctorImage && profile.doctorImage !== image) {
+                const oldPath = extractStoragePath(profile.doctorImage);
+                if (oldPath) {
+                    await supabase.storage.from('images').remove([oldPath]);
+                }
+            }
+
+            // 2. رفع الصورة الجديدة باستخدام upsert: true
             const { error: uploadError } = await supabase.storage
                 .from('images') 
-                .upload(fileName, file, { upsert: true })
+                .upload(fileName, file, { 
+                    upsert: true,
+                    cacheControl: '0' 
+                })
 
             if (uploadError) {
                 console.error("Error uploading image:", uploadError.message)
@@ -37,7 +60,8 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
                 .from('images')
                 .getPublicUrl(fileName)
 
-            return data.publicUrl
+            // إضافة بصمة زمنية لمنع الكاش وتحديث الصورة فوراً
+            return `${data.publicUrl}?v=${Date.now()}`
         } catch (error) {
             console.error("Unexpected error:", error)
             return null
@@ -47,7 +71,6 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
     const handleUpdateProfile = async (e: React.FormEvent | React.MouseEvent) => {
         e.preventDefault()
         
-        // التحقق من الـ Session قبل التحديث لضمان عدم حدوث خطأ على Vercel
         const { data: { session }, error: sessionErr } = await supabase.auth.getSession()
         if (sessionErr || !session) {
             console.log("No active session found on Vercel:", sessionErr?.message)

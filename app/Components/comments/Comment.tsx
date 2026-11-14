@@ -8,6 +8,7 @@ import { HeartFill } from 'react-bootstrap-icons'
 import { CommentType, ProfileType } from '../assets/assets'
 import { supabase } from '../assets/supabase-client'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function Comment({ comment }: { comment: CommentType }) {
     const [commentOwner, setCommentOwner] = useState<ProfileType | null>(null)
@@ -100,7 +101,8 @@ export default function Comment({ comment }: { comment: CommentType }) {
                         </div>
                     </div>
                 ) : (
-                    <>
+                        <>
+                        <Link href={`${commentOwner?.doctorType==="dentist" ? `/doctors/${commentOwner?.id}`:`/visitors/${commentOwner?.id}`}`} >
                         <Image
                             src={commentOwner?.doctorImage ? commentOwner?.doctorImage : img}
                             alt='img'
@@ -109,6 +111,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
                             loading='lazy'
                             className='w-16 h-16 border-4 border-blue-600 rounded-full object-cover shrink-0'
                         />
+                        </Link>
                         <div className="w-full">
                             <h2 className='text-2xl mb-1 text-blue-600 font-bold'> {commentOwner?.doctorName || "User"} </h2>
                             <p className='text-[18px] break-word'> {comment?.comment_text} </p>

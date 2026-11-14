@@ -13,14 +13,14 @@ export default function DashboardAddPost() {
     const { mode } = useThemeContext()
     const [activeAlert, setActiveAlert] = useState<boolean>(false)
     const [activeAddAlert, setActiveAddAlert] = useState<boolean>(false)
-    const [uploading, setUploading] = useState<boolean>(false) // مؤشر لتحميل الصورة
+    const [uploading, setUploading] = useState<boolean>(false) // مؤشر لتحميل الصور
     const router = useRouter()
     
     const [newPost, setNewPost] = useState<postType>(
         {
             name: "",
             description: "",
-            image: "",
+            images: [],
             type: "",
             likes: 0,
             user_id: "",
@@ -35,7 +35,7 @@ export default function DashboardAddPost() {
             console.log("Error getting user", authError?.message)
         }
         if (user) {
-            setNewPost({...newPost, user_id: user.id})
+            setNewPost(prev => ({...prev, user_id: user.id}))
         }
     }
 
@@ -43,35 +43,43 @@ export default function DashboardAddPost() {
         handleGetUser()
     }, [])
 
-    // دالة رفع الصورة لـ Supabase Storage وتوليد الـ Public URL
-    const uploadImageToStorage = async (file: File) => {
+    // دالة رفع الصور المتعددة لـ Supabase Storage وتوليد الـ Public URLs
+    const uploadImagesToStorage = async (files: FileList) => {
         try {
             setUploading(true)
-            const fileExt = file.name.split('.').pop()
-            const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`
-            
-            // الرفع للـ Bucket اللي اسمه 'images'
-            const { error: uploadError } = await supabase.storage
-                .from('images') 
-                .upload(fileName, file)
+            const filesArray = Array.from(files).slice(0, 5); // حد أقصى 5 صور مثلاً
+            const uploadedUrls: string[] = [];
 
-            if (uploadError) {
-                console.error("Error uploading image:", uploadError.message)
-                setUploading(false)
-                return null
+            for (const file of filesArray) {
+                const fileExt = file.name.split('.').pop()
+                const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`
+                
+                // الرفع للـ Bucket اللي اسمه 'images'
+                const { error: uploadError } = await supabase.storage
+                    .from('images') 
+                    .upload(fileName, file)
+
+                if (uploadError) {
+                    console.error("Error uploading image:", uploadError.message)
+                    continue;
+                }
+
+                // جلب الرابط العام للصورة
+                const { data } = supabase.storage
+                    .from('images')
+                    .getPublicUrl(fileName)
+
+                if (data?.publicUrl) {
+                    uploadedUrls.push(data.publicUrl);
+                }
             }
 
-            // جلب الرابط العام للصورة
-            const { data } = supabase.storage
-                .from('images')
-                .getPublicUrl(fileName)
-
             setUploading(false)
-            return data.publicUrl
+            return uploadedUrls;
         } catch (error) {
             console.error("Unexpected error:", error)
             setUploading(false)
-            return null
+            return []
         }
     }
 
@@ -100,7 +108,7 @@ export default function DashboardAddPost() {
         setNewPost({
             name: "",
             description: "",
-            image: "",
+            images: [],
             type: "",
             likes: 0,
             user_id: "",
@@ -150,18 +158,21 @@ export default function DashboardAddPost() {
                 </div>
 
                 <div className='flex flex-col gap-1'>
-                    <label htmlFor="image"> {t("dashboard.add.image")} {uploading && <span className="text-blue-500 text-sm">(جاري رفع الصورة...)</span>} </label>
+                    <label htmlFor="image"> 
+                        {t("dashboard.add.image")} 
+                        {uploading && <span className="text-blue-500 text-sm ml-2 font-bold">   . . .</span>} 
+                    </label>
                     <input 
-                        className='p-3 rounded-2xl border-2 border-gray-400 focus:border-blue-600 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100' 
+                        className='p-3 rounded-2xl border-2 border-gray-400 focus:border-blue-600 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer' 
                         type="file" 
                         accept="image/*"
+                        multiple // السماح باختيار صور متعددة
                         onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                                // استبدال الـ Base64 بالرفع المباشر لـ Supabase Storage
-                                const publicUrl = await uploadImageToStorage(file);
-                                if (publicUrl) {
-                                    setNewPost({ ...newPost, image: publicUrl });
+                            const files = e.target.files;
+                            if (files && files.length > 0) {
+                                const publicUrls = await uploadImagesToStorage(files);
+                                if (publicUrls && publicUrls.length > 0) {
+                                    setNewPost(prev => ({ ...prev, images: publicUrls }));
                                 }
                             }
                         }}
@@ -174,7 +185,7 @@ export default function DashboardAddPost() {
                     disabled={uploading}
                     className={`flex items-center gap-1 col-span-1 md:col-span-2 p-3 bg-blue-600 hover:bg-blue-800 justify-center text-2xl rounded-2xl text-white ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    {uploading ? "جاري الرفع..." : t("dashboard.add.add")} <Plus/> 
+                    {uploading ? " ..." : <>{t("dashboard.add.add")} <Plus/></>} 
                 </button>
             </form>
 

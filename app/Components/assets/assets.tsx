@@ -7,7 +7,7 @@ export  interface postType {
     id?:string
     name: string,
     description?: string,
-    image?: string,
+    images?: string[],
     type?: string,
     likes?: number,
     user_id?: string, 
