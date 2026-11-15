@@ -7,8 +7,27 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-    title: "veneraup",
-    description: "Venera SaaS app community page",
+    title: "Veneraup - فينيرا أب | منصة الأطباء والعيادات وحجز المواعيد",
+    description: "منصة فينيرا أب (Veneraup) المتكاملة للأطباء والمراكز الطبية لحجز المواعيد، إدارة العيادات، ومتابعة الحالات الطبية بسهولة.",
+    keywords: [
+        "Veneraup",
+        "فينيرا",
+        "فينيرا أب",
+        "حجز مواعيد عيادات",
+        "إدارة عيادات",
+        "منصة أطباء"
+    ],
+    alternates: {
+        canonical: "https://veneraup.com",
+    },
+    openGraph: {
+        title: "Veneraup - فينيرا أب | نظام حجز وإدارة العيادات",
+        description: "تواصل مع الأطباء، احجز مواعيدك، وأدِر عيادتك بالكامل عبر منصة فينيرا أب.",
+        url: "https://veneraup.com",
+        siteName: "Veneraup - فينيرا أب",
+        locale: "ar_EG",
+        type: "website",
+    },
 };
 
 export default async function Feed() {
