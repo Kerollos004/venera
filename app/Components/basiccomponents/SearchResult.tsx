@@ -23,7 +23,7 @@ export default function SearchResult({ profile }: { profile: ProfileType }) {
                 mode === "light" 
                     ? "bg-white/75 text-slate-900 shadow-sm" 
                     : "bg-slate-900/75 text-white shadow-xl"
-            } backdrop-blur-xl p-3 rounded-3xl flex items-center gap-2.5 transition hover:border-blue-600 block`}
+            } backdrop-blur-xl p-3 rounded-3xl flex items-center gap-2.5 transition hover:border-blue-600 `}
         >
             <Image
                 src={profile?.doctorImage ? profile?.doctorImage : subimg}
@@ -31,7 +31,7 @@ export default function SearchResult({ profile }: { profile: ProfileType }) {
                 width={200}
                 height={200} 
                 loading='lazy'
-                className='w-16 h-16 rounded-full object-cover flex-shrink-0'
+                className='w-20 h-20 rounded-full  object-top-left '
             />
             <div className="overflow-hidden">
                 <h3 className='text-xl mb-1 truncate'>{profile?.doctorName}</h3>
