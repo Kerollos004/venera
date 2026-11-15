@@ -152,7 +152,7 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
                                     alt={`certificate image ${index}`}
                                     fill
                                     draggable={false}
-                                    className='object-cover cursor-pointer hover:scale-105 transition duration-300'
+                                    className=' cursor-pointer hover:scale-105 transition duration-300'
                                     loading='lazy'
                                 />
                             </div>
@@ -172,7 +172,7 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
                                         src={certImages[2]}
                                         alt="extra background"
                                         fill
-                                        className="object-cover group-hover:scale-105 transition duration-300"
+                                        className=" group-hover:scale-105 transition duration-300"
                                     />
                                 </div>
                                 <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">

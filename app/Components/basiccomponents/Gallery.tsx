@@ -34,7 +34,7 @@ export default function Gallery({ images , id }: { images: string[] , id?:string
     })
 
     return (
-        <section className={` ${isOpen ? "block" : "hidden"} fixed inset-0 z-50 flex flex-col items-center w-full min-h-screen overflow-hidden justify-center bg-black/90 backdrop-blur-md p-4 md:p-10`}>
+        <section className={` ${isOpen ? "block" : "hidden"} fixed inset-0 z-50 flex flex-col items-center justify-center w-full min-h-screen overflow-hidden justify-center bg-black/90 backdrop-blur-md p-4 md:p-10`}>
             {/* زر الإغلاق */}
             <button
                 onClick={() => {
