@@ -3,15 +3,16 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { HeartFill , ChatDotsFill } from 'react-bootstrap-icons'
-import { useOpenGalleryContext, useSelectedCommentContext, useThemeContext } from '../assets/contexts'
+import { useOpenGalleryContext, useSelectedCommentContext, useSelectedPostContext, useThemeContext } from '../assets/contexts'
 
 import "../../reacti18"
 import { postType  } from '../assets/assets'
 import { useTranslation } from 'react-i18next'
+import Gallery from '../basiccomponents/Gallery'
 import Image from 'next/image'
 import { supabase } from '../assets/supabase-client'
-import Gallery from '../basiccomponents/Gallery'
-export default function PostContent({post}:{post:postType}) {
+
+export default function PostContent({ post }: { post: postType }) {
     const [heart, setHeart] = useState(false)
     const [reacts, setReacts] = useState<number>(post.likes ? post?.likes : 0)
     const [comments, setComments] = useState<number>(0)
@@ -20,7 +21,8 @@ export default function PostContent({post}:{post:postType}) {
     const {setSelectedComment} = useSelectedCommentContext()
     const limit = 150;
     const { t } = useTranslation()
-    const {setOpenGallery} = useOpenGalleryContext()
+    const { setOpenGallery } = useOpenGalleryContext()
+    const { setSelectedPost } = useSelectedPostContext()
 
     // توحيد الصور في Array (دعم images الجديدة أو image القديمة كـ Array أو String)
     const postImages: string[] = Array.isArray(post?.images) && post.images.length > 0
@@ -156,7 +158,7 @@ export default function PostContent({post}:{post:postType}) {
                     <div className={`grid gap-2 rounded-xl overflow-hidden ${
                         postImages.length === 1 ? 'grid-cols-1' :
                         postImages.length === 2 ? 'grid-cols-2' :
-                        'grid-cols-3' 
+                        'grid-cols-2' 
                     }`}>
                         {/* عرض أول صورتين أو الصورة الوحيدة */}
                         {displayedImages.map((imgUrl, index) => (
@@ -172,7 +174,6 @@ export default function PostContent({post}:{post:postType}) {
                                     alt={`post image ${index}`}
                                     fill
                                     draggable={false}
-                                    className='object-cover cursor-pointer hover:scale-105 transition duration-300'
                                     loading='lazy'
                                 />
                             </div>
@@ -183,6 +184,7 @@ export default function PostContent({post}:{post:postType}) {
                             <div 
                                 onClick={() => {
                                     setOpenGallery(true)
+                                    setSelectedPost(post?.id ? post?.id:"")
                                 }}
                                 className="relative w-full h-56 overflow-hidden rounded-xl bg-slate-800/90 border-2 border-dashed border-slate-600 cursor-pointer flex flex-col items-center justify-center text-white transition hover:bg-slate-800 hover:border-blue-500 group"
                             >
@@ -192,7 +194,6 @@ export default function PostContent({post}:{post:postType}) {
                                         src={postImages[2]}
                                         alt="background extra"
                                         fill
-                                        className="object-cover group-hover:scale-105 transition duration-300"
                                     />
                                 </div>
                                 <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
@@ -249,9 +250,10 @@ export default function PostContent({post}:{post:postType}) {
                         />
                         <span> {comments} </span>
                     </div>
-                </div>
+                    </div>
+                    
             )}
-            <Gallery id={post?.id} images={post?.images ? post?.images : []} />
+            <Gallery id={post?.id ? post?.id : ''} images={post?.images ? post?.images :[]}/>
         </div>
     )
 }

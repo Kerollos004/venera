@@ -102,7 +102,7 @@ export default function Profile({ profile }: { profile: ProfileType }) {
                             alt='img'
                             width={130}
                             height={130}
-                            className='rounded-full w-32 h-32 border-2 border-blue-500 object-cover'
+                            className='rounded-full w-35 h-35 border-2 border-blue-500 object-top-left object-cover'
                             loading='lazy'
                         />
                         <article className='text-center md:text-left'>
@@ -166,8 +166,8 @@ export default function Profile({ profile }: { profile: ProfileType }) {
                     )}
                 </article>
 
-                <article className={`col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
-                    <h3 className="text-3xl font-bold text-blue-600 mb-2">{t("profile.feedbacks")}</h3>
+                <article className={` flex flex-col justify-center col-span-1 md:col-span-4 p-3 rounded-2xl ${mode === "light" ? "bg-gray-300 text-black" : "bg-[#1e293b] text-white"} border-b-8 border-blue-600`}>
+                    <h3 className="text-3xl text-left font-bold text-blue-600 mb-2">{t("profile.feedbacks")}</h3>
                     {profile?.doctorFeedbacks && profile.doctorFeedbacks.length > 0 ? (
                         <Feedback feedbacks={profile.doctorFeedbacks} />
                     ) : (

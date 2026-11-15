@@ -12,7 +12,7 @@ export default function PostHeader({profile}:{profile:ProfileType}) {
                         alt='img'
                         width={80}
                         height={80}
-                        className=' w-16 h-16 rounded-full '
+                        className=' w-25 h-25 rounded-full object-cover object-top-left '
                         loading='lazy'
                     />
                 </Link>

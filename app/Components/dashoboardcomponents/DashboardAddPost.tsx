@@ -185,7 +185,7 @@ export default function DashboardAddPost() {
                     disabled={uploading}
                     className={`flex items-center gap-1 col-span-1 md:col-span-2 p-3 bg-blue-600 hover:bg-blue-800 justify-center text-2xl rounded-2xl text-white ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    {uploading ? " ..." : <>{t("dashboard.add.add")} <Plus/></>} 
+                    {t("dashboard.add.add")} <Plus />
                 </button>
             </form>
 

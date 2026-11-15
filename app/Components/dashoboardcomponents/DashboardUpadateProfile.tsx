@@ -90,7 +90,6 @@ export default function DashboardUpadateProfile({ profile }: { profile: ProfileT
         }
         
         setOpenUpdateProfile(false)
-        window.location.reload()
     }
 
     return (

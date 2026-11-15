@@ -236,3 +236,31 @@ export const OpenGalleryProvider = ({ children }: { children: ReactNode }) => {
         </OpenGalleryContext.Provider>
     );
 };
+
+//open preview images
+
+interface selectedPost {
+    selectedPost: string,
+    setSelectedPost: Dispatch <SetStateAction<string>>
+}
+
+
+const SelectedPostContext = createContext<selectedPost | null>(null)
+
+export const useSelectedPostContext = () => {
+    const context = useContext(SelectedPostContext)
+
+    if (!context) {
+        throw new Error('useTheme must be used within a commentsProvider');
+    }
+    return context
+}
+
+export const SelectedPostProvider = ({ children }: { children: ReactNode }) => {
+    const [selectedPost, setSelectedPost] = useState<string>("");
+    return (
+        <SelectedPostContext.Provider value={{ selectedPost, setSelectedPost }}>
+            {children}
+        </SelectedPostContext.Provider>
+    );
+};
