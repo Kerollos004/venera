@@ -8,7 +8,6 @@ import Link from 'next/link';
 
 export default function SearchResult({ profile }: { profile: ProfileType }) {
     const { mode } = useThemeContext()
-    const { setOpenSearchDoctors } = useOpenSearchDoctorsContext()
     
     // تحديد الرابط بناءً على نوع المستخدم (طبيب أسنان أو زائر)
     const profileLink = profile?.doctorType === "dentist" 
@@ -17,7 +16,7 @@ export default function SearchResult({ profile }: { profile: ProfileType }) {
 
     return (
         <Link 
-            onClick={() => setOpenSearchDoctors(false)} 
+            
             href={profileLink}
             className={`w-full mb-3 border-2 border-blue-500/50 ${
                 mode === "light" 

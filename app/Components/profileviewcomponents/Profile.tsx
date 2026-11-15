@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 import React, { useEffect, useState } from 'react'
-import { useThemeContext } from '../assets/contexts'
+import { useOpenSearchDoctorsContext, useThemeContext } from '../assets/contexts'
 import Image from 'next/image'
 import { ProfileType } from '../assets/assets'
 import Certificate from './Certificate'
@@ -28,6 +28,11 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [profileOwnerId, setProfileOwnerId] = useState<string | null>(null)
     const [openFeedBack, setOpenedFeedBack] = useState<boolean>(false)
+    const { setOpenSearchDoctors } = useOpenSearchDoctorsContext()
+    
+    useEffect(() => {
+        setOpenSearchDoctors(false)
+    } , [])
 
     useEffect(() => {
         const verifyUser = async () => {
