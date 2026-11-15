@@ -66,7 +66,7 @@ export default function DashboardPost({ post }: { post: postType }) {
         } else {
             setActiveDelAlert(true);
             setTimeout(() => {
-                window.location.reload();
+                setActiveDelAlert(false)
             }, 1000);
         }
     }
