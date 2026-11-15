@@ -109,7 +109,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
                             width={200}
                             height={200}
                             loading='lazy'
-                            className='w-16 h-16 border-4 border-blue-600 rounded-full object-cover shrink-0'
+                            className='w-16 h-16 border-4 border-blue-600 rounded-full object-cover '
                         />
                         </Link>
                         <div className="w-full">
