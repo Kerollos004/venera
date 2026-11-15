@@ -113,7 +113,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
                         />
                         </Link>
                         <div className="w-full">
-                            <h2 className='text-2xl mb-1 text-blue-600 font-bold'> {commentOwner?.doctorName || "User"} </h2>
+                            <h2 className='text-xl md:text-2xl mb-1 text-blue-600 font-bold'> {commentOwner?.doctorName || "User"} </h2>
                             <p className='text-[18px] break-word'> {comment?.comment_text} </p>
                         </div>
                     </>

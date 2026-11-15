@@ -87,7 +87,7 @@ export default function DashboardPost({ post }: { post: postType }) {
                     />
                 ) : null}
                 <div className=""> 
-                    <h3 className='text-3xl'> {post?.name} </h3>
+                    <h3 className='text-xl md:text-3xl'> {post?.name} </h3>
                     <div className="flex gap-2.5 items-start flex-col md:flex-row md:items-center">
                         <h3> total likes : {post?.likes} </h3>
                         <h3> total comments : {postComments?.length} </h3>
