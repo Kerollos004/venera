@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { postType, CommentType } from '../assets/assets'
 import { HeartFill, ChatDotsFill } from 'react-bootstrap-icons'
 import { supabase } from '../assets/supabase-client'
-import { useThemeContext, useSelectedCommentContext, useOpenGalleryContext } from '../assets/contexts'
+import { useThemeContext, useSelectedCommentContext, useOpenGalleryContext, useSelectedPostContext } from '../assets/contexts'
 import { useTranslation } from 'react-i18next'
 import CommentForm from '../comments/CommentForm'
 import PostComment from '../comments/PostComment'
@@ -21,7 +21,8 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
     const { mode } = useThemeContext()
     const { setSelectedComment } = useSelectedCommentContext()
     const { t } = useTranslation()
-    const {setOpenGallery} = useOpenGalleryContext()
+    const { setOpenGallery } = useOpenGalleryContext()
+    const {setSelectedPost} = useSelectedPostContext()
 
     // توحيد الصور في Array (سواء كانت في images أو image القديمة)
     const certImages: string[] = Array.isArray(certificate?.images) && certificate.images.length > 0
@@ -162,8 +163,9 @@ export default function SingleCertificate({ certificate }: { certificate: postTy
                             <div 
                                 onClick={() => {
                                     setOpenGallery(true)
+                                    setSelectedPost(certificate?.id ? certificate?.id:"")
                                 }}
-                                className="relative w-full h-56 overflow-hidden rounded-lg bg-slate-900 border border-slate-700 cursor-pointer flex flex-col items-center justify-center text-white transition hover:border-blue-500 group"
+                                className="relative w-full h-56 overflow-hidden rounded-lg bg-slate-900 border-2 border-slate-700 cursor-pointer flex flex-col items-center justify-center text-white transition hover:border-blue-500 group"
                             >
                                 <div className="absolute inset-0 opacity-20">
                                     <Image

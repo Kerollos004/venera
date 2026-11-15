@@ -64,14 +64,52 @@ export default function Profile({ profile }: { profile: ProfileType }) {
     if (loading) {
         return (
             <main className={`w-full min-h-screen md:pt-20 py-10 px-3.5 md:px-10 ${mode === "light" ? "bg-gray-100" : "bg-[#0f172a]"}`}>
+                {/* 1. سكيلتون الهيدر (الصورة والاسم وأزرار التواصل) */}
                 <section className='flex flex-col md:flex-row items-center gap-4 justify-between mb-8 animate-pulse'>
-                    <div className='flex flex-col md:flex-row items-center gap-4'>
-                        <div className='w-24 h-24 rounded-full bg-gray-500/30 border-2 border-blue-500/40 shrink-0' />
-                        <div className='flex flex-col items-center md:items-start gap-2'>
-                            <div className='h-8 bg-gray-500/30 rounded-xl w-48' />
-                            <div className='h-4 bg-gray-500/20 rounded-lg w-32' />
+                    <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
+                        <div className='w-35 h-35 rounded-full bg-gray-500/30 border-2 border-blue-500/40 shrink-0' />
+                        <div className='flex flex-col items-center md:items-start gap-3 w-full'>
+                            <div className='h-10 bg-gray-500/30 rounded-xl w-64' />
+                            <div className='h-4 bg-gray-500/20 rounded-lg w-40' />
+                            <div className='h-10 bg-gray-500/20 rounded-3xl w-32 mt-2' />
                         </div>
                     </div>
+                    <div className='flex items-center gap-3 mt-4 md:mt-0'>
+                        <div className='w-12 h-12 rounded-full bg-gray-500/30' />
+                        <div className='w-12 h-12 rounded-full bg-gray-500/30' />
+                        <div className='w-12 h-12 rounded-full bg-gray-500/30' />
+                    </div>
+                </section>
+
+                {/* 2. سكيلتون الأقسام (نبذة، الشهادات، الإنجازات، الآراء) */}
+                <section className='grid grid-cols-1 md:grid-cols-4 gap-3.5 items-start animate-pulse'>
+                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} h-32`}>
+                        <div className='h-6 bg-gray-500/30 rounded w-32 mb-3' />
+                        <div className='h-4 bg-gray-500/20 rounded w-full mb-2' />
+                        <div className='h-4 bg-gray-500/20 rounded w-3/4' />
+                    </div>
+
+                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} h-40`}>
+                        <div className='h-6 bg-gray-500/30 rounded w-40 mb-4' />
+                        <div className='flex gap-4'>
+                            <div className='h-24 bg-gray-500/20 rounded-xl w-32' />
+                            <div className='h-24 bg-gray-500/20 rounded-xl w-32' />
+                        </div>
+                    </div>
+
+                    <div className={`col-span-1 md:col-span-4 p-5 rounded-2xl ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} h-40`}>
+                        <div className='h-6 bg-gray-500/30 rounded w-40 mb-4' />
+                        <div className='flex gap-4'>
+                            <div className='h-24 bg-gray-500/20 rounded-xl w-32' />
+                            <div className='h-24 bg-gray-500/20 rounded-xl w-32' />
+                        </div>
+                    </div>
+                </section>
+
+                {/* 3. سكيلتون البوستات */}
+                <section className={`mt-6 ${mode === "light" ? "bg-gray-300" : "bg-[#1e293b]"} p-5 md:px-20 lg:px-40 rounded-2xl animate-pulse h-64`}>
+                    <div className='h-6 bg-gray-500/30 rounded w-36 mb-6' />
+                    <div className='h-36 bg-gray-500/20 rounded-xl w-full' />
                 </section>
             </main>
         )

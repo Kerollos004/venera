@@ -6,7 +6,7 @@ import { HeartFill, ChatDotsFill } from 'react-bootstrap-icons'
 import Image from 'next/image'
 import { postType } from '../assets/assets'
 import { supabase } from '../assets/supabase-client'
-import { useThemeContext, useSelectedCommentContext, useOpenGalleryContext } from '../assets/contexts'
+import { useThemeContext, useSelectedCommentContext, useOpenGalleryContext , useSelectedPostContext} from '../assets/contexts'
 import CommentForm from '../comments/CommentForm'
 import PostComment from '../comments/PostComment'
 import "../../reacti18"
@@ -23,7 +23,9 @@ export function SinglePostCase({ currentCase }: { currentCase: postType }) {
     const { mode } = useThemeContext()
     const { setSelectedComment } = useSelectedCommentContext()
     const { t } = useTranslation()
-    const {setOpenGallery} = useOpenGalleryContext()
+    const { setOpenGallery } = useOpenGalleryContext()
+    const { setSelectedPost } = useSelectedPostContext()
+    
 
     // تجميع الصور (دعم القديم والجديد معاً)
     const caseImages: string[] = currentCase?.images && currentCase.images.length > 0 
@@ -153,7 +155,7 @@ export function SinglePostCase({ currentCase }: { currentCase: postType }) {
                     <div className={`grid gap-2 rounded-xl overflow-hidden ${
                         caseImages.length === 1 ? 'grid-cols-1' :
                         caseImages.length === 2 ? 'grid-cols-2' :
-                        'grid-cols-3'
+                        'grid-cols-2'
                     }`}>
                         {displayedImages.map((imgUrl, index) => (
                             <div 
@@ -179,8 +181,9 @@ export function SinglePostCase({ currentCase }: { currentCase: postType }) {
                             <div 
                                 onClick={() => {
                                     setOpenGallery(true)
+                                    setSelectedPost(currentCase?.id ? currentCase?.id:"")
                                 }}
-                                className="relative w-full h-48 overflow-hidden rounded-lg bg-slate-900 border border-slate-700 cursor-pointer flex flex-col items-center justify-center text-white transition hover:border-blue-500 group"
+                                className="relative w-full h-48 overflow-hidden rounded-lg bg-slate-900 border-2 border-slate-700 cursor-pointer flex flex-col items-center justify-center text-white transition hover:border-blue-500 group"
                             >
                                 <div className="absolute inset-0 opacity-20">
                                     <Image
