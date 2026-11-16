@@ -94,7 +94,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
                 {/* لو البيانات لسه بتحمل، بنعرض شكل Skeleton خفيف عشان ميبحصلش قفزة في الشاشة */}
                 {loading ? (
                     <div className="flex items-center gap-3 w-full animate-pulse">
-                        <div className="w-16 h-16 bg-gray-600 rounded-full shrink-0" />
+                        <div className="w-20 h-20 bg-gray-600 rounded-full " />
                         <div className="flex flex-col gap-2 w-full">
                             <div className="h-5 bg-gray-600 rounded w-1/3" />
                             <div className="h-4 bg-gray-600 rounded w-2/3" />
@@ -109,7 +109,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
                             width={200}
                             height={200}
                             loading='lazy'
-                            className='w-16 h-16 border-4 border-blue-600 rounded-full object-cover '
+                            className='w-20 h-20 border-4 border-blue-600 rounded-full object-cover '
                         />
                         </Link>
                         <div className="w-full">

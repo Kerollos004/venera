@@ -47,7 +47,7 @@ export default function DashboardAddPost() {
     const uploadImagesToStorage = async (files: FileList) => {
         try {
             setUploading(true)
-            const filesArray = Array.from(files).slice(0, 20); // حد أقصى 5 صور مثلاً
+            const filesArray = Array.from(files).slice(0, 100); 
             const uploadedUrls: string[] = [];
 
             for (const file of filesArray) {

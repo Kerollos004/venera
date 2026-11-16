@@ -6,7 +6,9 @@
   import MobMenu from "./Components/basiccomponents/MobMenu";
   // import Checkout from "./Components/checkoutcomponents/Checkout";
   import MobSearchIcon from "./Components/basiccomponents/MobSearchIcon";
-  import SearchContainer from "./Components/basiccomponents/SearchContainer";
+import SearchContainer from "./Components/basiccomponents/SearchContainer";
+  import { GoogleAnalytics } from '@next/third-parties/google';
+
 export const metadata: Metadata = {
   title: "Veneraup - فينيرا أب | نظام حجز وإدارة العيادات والمواعيد",
   description: "منصة فينيرا أب (Veneraup) المتكاملة لحجز المواعيد وإدارة العيادات والملفات الطبية بسهولة.",
@@ -61,6 +63,7 @@ export const metadata: Metadata = {
             </FormProvider>
           </ThemeProvider>
         </body>
+        <GoogleAnalytics gaId="G-XYZ" />
       </html>
     );
   }
